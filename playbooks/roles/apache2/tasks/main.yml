@@ -1,0 +1,28 @@
+---
+# tasks file for apache2
+
+- name: include OS-specific variable file
+  include_vars: "var_{{ ansible_os_family | lower }}.yml"
+
+- name: install apache
+  apt:
+    update_cache: yes
+    name:
+      - "{{ apache_name }}"
+    state: present
+
+- name: run OS specific installation steps
+  include: "install_{{ ansible_os_family | lower }}.yml"
+
+- name: setup default website
+  include: "setup_default_site.yml"
+
+- name: enable apache service on startup
+  service:
+    name: "{{ apache_name }}"
+    enabled: yes
+
+- name: start apache service
+  service:
+    name: "{{ apache_name }}"
+    state: started    

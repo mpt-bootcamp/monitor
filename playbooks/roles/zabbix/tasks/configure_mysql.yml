@@ -1,0 +1,41 @@
+---
+# Configure mysql
+
+- name: create the zabbix database
+  mysql_db:
+    name: zabbixdb
+    encoding: "utf8"
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+    collation: "utf8_bin"
+    state: present
+  register: zabbixdb
+
+- name: create the zabbix database user
+  mysql_user:
+    login_unix_socket: /var/run/mysqld/mysqld.sock  
+    name: zabbix
+    password: password
+    priv: 'zabbixdb.*:ALL'
+    update_password: on_create
+    state: present
+
+- name: load zabbix database schema
+  mysql_db:
+    login_unix_socket: /var/run/mysqld/mysqld.sock  
+    state: import
+    name: zabbixdb
+    target: /usr/share/doc/zabbix-server-mysql/create.sql.gz
+  when: zabbixdb.changed
+
+- name: update php timezone
+  lineinfile:
+    path: /etc/php/7.3/apache2/php.ini
+    regexp: "^date.timezone ="
+    line: "date.timezone = UTC"
+    state: present
+  notify:
+    - restart apache
+    - restart zabbix-server
+
+
+

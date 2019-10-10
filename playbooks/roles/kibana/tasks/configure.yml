@@ -1,0 +1,16 @@
+---
+# configure kibana
+
+## Replace logo. This require rebuild
+#
+# /usr/share/kibana/src/ui/public/images/kibana.svg
+#
+# best to change it in 
+# common.style.css
+#.global-nav .logo.kibana {
+#  background-image: url(/bundles/ebdca7741674eca4e1fadeca157f3ae6.svg);
+#  background-position: 10px 14px;
+#  background-size: 120px 42px;
+#  background-repeat: no-repeat;
+#}
+

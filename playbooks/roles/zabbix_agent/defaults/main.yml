@@ -1,0 +1,7 @@
+---
+# defaults file for zabbix_agent
+
+zabbix_version: 4.0
+zabbix_repo_url: https://repo.zabbix.com/zabbix/4.0/ubuntu/pool/main/z/zabbix-release/zabbix-release_4.0-3+xenial_all.deb
+
+zabbix_host: localhost:10050

@@ -1,0 +1,8 @@
+---
+# tasks file for zabbix
+
+- name: run OS specific installation steps
+  include: "install_{{ ansible_os_family | lower }}.yml"
+
+- name: configure mysql
+  include: "configure_mysql.yml"

@@ -1,0 +1,12 @@
+---
+# tasks file for postfix
+
+# Configure Postfix as a sned only smtp server
+# https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-postfix-as-a-send-only-smtp-server-on-ubuntu-16-04
+# http://www.iasptk.com/configure-postfix-relayhost-smarthost-send-email-using-external-smptd/
+
+# Use this one
+# https://www.linuxbabe.com/mail-server/postfix-smtp-relay
+
+
+# https://docs.aws.amazon.com/ses/latest/DeveloperGuide/postfix.html

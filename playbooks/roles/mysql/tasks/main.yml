@@ -1,0 +1,25 @@
+---
+# tasks file for mysql
+
+- name: include OS-specific variable file
+  include_vars: "var_{{ ansible_os_family | lower }}.yml"
+
+- name: install mysql
+  apt:
+    update_cache: yes
+    name:
+      - "{{ mysql_pkg_name }}"
+    state: present
+
+- name: run OS specific installation steps
+  include: "install_{{ ansible_os_family | lower }}.yml" 
+
+- name: enable mysql service on startup
+  service:
+    name: "{{ mysql_svc_name }}"
+    enabled: yes
+
+- name: start mysql service
+  service:
+    name: "{{ mysql_svc_name }}"
+    state: started 

@@ -1,0 +1,12 @@
+---
+# defaults file for apache2
+
+# see name in OS specific var file
+# apache_name: apache2
+
+apache_home: /var/www/html
+
+apache_owner: root
+apache_group: root
+
+

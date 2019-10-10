@@ -1,0 +1,10 @@
+---
+# defaults file for auditbeat
+
+auditbeat_version: "7.4.0"
+
+elastic_key_url: "https://artifacts.elastic.co/GPG-KEY-elasticsearch"
+elastic_repo_url: "deb https://artifacts.elastic.co/packages/7.x/apt stable main"
+
+elasticsearch_url: "localhost:9200"
+kibana_url: "localhost:5601"

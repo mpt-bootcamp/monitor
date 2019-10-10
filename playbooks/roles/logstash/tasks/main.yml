@@ -1,0 +1,30 @@
+---
+# tasks file for logstash
+# Logstash requires Java 8 or Java 11. Use the official Oracle distribution or 
+# an open-source distribution such as OpenJDK.
+
+- name: add elasticsearch public signing key
+  apt_key:
+    url: "{{ elastic_key_url }}"
+    state: present
+
+- name: add elasticsearch repo definition
+  apt_repository:
+    repo: "{{ elastic_repo_url }}"
+    update_cache: yes
+    state: present
+
+- name: install logstash and required packages
+  apt:
+    name: "logstash=1:{{ logstash_version }}-1"
+    state: present
+   
+- name: configure logstash
+  template:
+    src: logstash.yml.{{logstash_version}}.j2
+    dest: /etc/logstash/logstash.yml
+    backup: yes
+  notify: restart logstash
+  
+- name: enable logstash to start on bootup
+  service: name=logstash enabled=yes state=started

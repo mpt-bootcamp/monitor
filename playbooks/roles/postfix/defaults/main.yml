@@ -1,0 +1,7 @@
+---
+# defaults file for postfix
+
+#email-smtp.us-east-1.amazonaws.com
+#25, 465 or 587
+#Use Transport Layer Security (TLS):	Yes
+#ses-smtp-user-alert/AKIA6QN3Z4MT3VANICEM,BNCusMNux4J4BrfWKD3G+ddo09FI0vUlOAS7J4QymrQr

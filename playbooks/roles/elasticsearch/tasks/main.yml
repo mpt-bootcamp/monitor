@@ -1,0 +1,30 @@
+---
+# tasks file for elasticsearch
+      
+- name: add elasticsearch public signing key
+  apt_key:
+    url: "{{ elastic_key_url }}"
+    state: present
+
+- name: add elasticsearch repo definition
+  apt_repository:
+    repo: "{{ elastic_repo_url }}"
+    update_cache: yes
+    state: present
+
+- name: install elasticsearch and required packages
+  apt:
+    name: "{{item.name}}={{item.version}}"
+    state: present
+  with_items:
+    - {name: 'elasticsearch', version: '{{elasticsearch_version}}' } 
+
+- name: use elasticsearch.yml configuration template
+  template:
+    src: elasticsearch.yml.{{ elasticsearch_version }}.j2
+    dest: /etc/elasticsearch/elasticsearch.yml
+    backup: yes
+  notify: restart elasticsearch
+
+- name: enable elasticsearch to start on bootup
+  service: name=elasticsearch enabled=yes state=started

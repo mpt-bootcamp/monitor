@@ -1,0 +1,62 @@
+---
+# installation tasks for Debian OS family
+
+- name: add the  repository
+  apt_repository:
+    filename: php.list
+    repo: 'ppa:ondrej/php'
+    state: present
+
+- name: add dependencies for PHP versions
+  apt:
+    update_cache: yes
+    name:
+      - apt-transport-https
+      - ca-certificates
+      - unzip
+    state: present
+
+# For multiple PHP versions, set the default PHP version
+# sudo update-alternatives --list php
+# sudo update-alternatives --set php /usr/bin/php7.3
+- name: install PHP
+  apt:
+    name:
+      - php{{php_version}}
+      - php{{php_version}}-cli
+      - php{{php_version}}-common   
+    state: present
+
+- name: install PHP extentions
+  apt:
+    state: present
+    name: "{{ item }}"
+  loop:
+      - php-pear 
+      - php{{php_version}}-curl 
+      - php{{php_version}}-dev 
+      - php{{php_version}}-gd 
+      - php{{php_version}}-mbstring 
+      - php{{php_version}}-zip 
+      - php{{php_version}}-mysql 
+      - php{{php_version}}-xml 
+      - php{{php_version}}-fpm 
+      - libapache2-mod-php{{php_version}} 
+      - php{{php_version}}-imagick 
+      - php{{php_version}}-recode 
+      - php{{php_version}}-tidy 
+      - php{{php_version}}-xmlrpc 
+      - php{{php_version}}-intl
+      - php{{php_version}}-simplexml
+      - php{{php_version}}-tokenizer
+      - php{{php_version}}-opcache
+      - php{{php_version}}-apcu
+      - php{{php_version}}-imap
+      - php{{php_version}}-bcmath
+      - php{{php_version}}-gmp      
+
+   
+  
+
+
+

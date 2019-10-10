@@ -1,0 +1,10 @@
+---
+# tasks file for zabbix_agent
+
+- name: run OS specific installation steps
+  include: "install_{{ ansible_os_family | lower }}.yml"
+
+- name: enable zabbix agent to start on bootup
+  service: name=zabbix-agent enabled=yes state=started
+
+# test from host: zabbix_get -s <remote-host> -p 10050 -k "system.cpu.load[all,avg1]"  

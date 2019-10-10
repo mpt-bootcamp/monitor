@@ -1,0 +1,10 @@
+# execute platform specific installation step
+
+- name: install the required sytem packages
+  apt:
+    update_cache: no
+    name: "{{ item }}"
+    state: present
+  loop:
+      - unzip
+  

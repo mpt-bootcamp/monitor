@@ -1,0 +1,5 @@
+---
+# handlers file for packetbeat
+
+- name: restart packetbeat
+  service: name=packetbeat state=restarted

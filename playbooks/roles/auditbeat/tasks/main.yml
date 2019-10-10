@@ -1,0 +1,30 @@
+---
+# tasks file for auditbeat
+
+- name: add elasticsearch public signing key
+  apt_key:
+    url: "{{ elastic_key_url }}"
+    state: present
+
+- name: add elasticsearch repo definition
+  apt_repository:
+    repo: "{{ elastic_repo_url }}"
+    update_cache: yes
+    state: present
+
+- name: install auditbeat and required packages
+  apt:
+    name: "{{item.name}}={{item.version}}"
+    state: present
+  with_items:
+    - {name: 'auditbeat', version: '{{auditbeat_version}}' }
+   
+- name: configure auditbeat
+  template:
+    src: auditbeat.yml.j2
+    dest: /etc/auditbeat/auditbeat.yml
+    backup: yes
+  notify: restart auditbeat
+
+- name: enable auditbeat to start on bootup
+  service: name=auditbeat enabled=yes state=started

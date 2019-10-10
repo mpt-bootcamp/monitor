@@ -1,0 +1,15 @@
+---
+app_env: local
+app_name: assets-manager 
+app_home: "/apps/{{app_name}}"
+app_owner: appsvc
+app_group: appsvc
+github_user: mpt-bootcamp
+
+app_pkg_url: "https://github.com/{{github_user}}/{{app_name}}/releases/download/v{{app_version}}/{{app_name}}-{{app_version}}.zip"
+app_version: 1.0.0
+app_pkg_name: "{{app_name}}-{{app_version}}.zip"
+app_src_dir: "/apps/build/{{app_name}}/dist"
+app_dest_dir: "{{app_home}}/{{app_version}}"
+
+

@@ -1,0 +1,30 @@
+---
+# tasks file for packetbeat
+
+- name: add elasticsearch public signing key
+  apt_key:
+    url: "{{ elastic_key_url }}"
+    state: present
+
+- name: add elasticsearch repo definition
+  apt_repository:
+    repo: "{{ elastic_repo_url }}"
+    update_cache: yes
+    state: present
+
+- name: install packetbeat and required packages
+  apt:
+    name: "{{item.name}}={{item.version}}"
+    state: present
+  with_items:
+    - {name: 'packetbeat', version: '{{packetbeat_version}}' }
+   
+- name: configure packetbeat with template
+  template:
+    src: packetbeat.yml.j2
+    dest: /etc/packetbeat/packetbeat.yml
+    backup: yes
+  notify: restart packetbeat
+
+- name: enable packetbeat to start on bootup
+  service: name=packetbeat enabled=yes state=started

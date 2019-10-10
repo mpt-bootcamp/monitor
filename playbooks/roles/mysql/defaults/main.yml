@@ -1,0 +1,5 @@
+---
+# defaults file for mysql
+
+mysql_pkg_name: mysql-server
+mysql_svc_name: mysql

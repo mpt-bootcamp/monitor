@@ -1,0 +1,5 @@
+
+#!/bin/bash
+
+JAVA_HOME=$(dirname $(dirname $(readlink -f $(which javac))))
+$JAVA_HOME/bin/java -Xmx1g -jar {{app_name}}-{{app_version}}.jar

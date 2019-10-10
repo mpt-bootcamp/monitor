@@ -1,0 +1,30 @@
+---
+# tasks file for filebeat
+
+- name: add elasticsearch public signing key
+  apt_key:
+    url: "{{ elastic_key_url }}"
+    state: present
+
+- name: add elasticsearch repo definition
+  apt_repository:
+    repo: "{{ elastic_repo_url }}"
+    update_cache: yes
+    state: present
+
+- name: install filebeat and required packages
+  apt:
+    name: "{{item.name}}={{item.version}}"
+    state: present
+  with_items:
+    - {name: 'filebeat', version: '{{filebeat_version}}' }
+   
+- name: configure filebeat
+  template:
+    src: filebeat.yml.j2
+    dest: /etc/filebeat/filebeat.yml
+    backup: yes
+  notify: restart filebeat
+
+- name: enable filebeat to start on bootup
+  service: name=filebeat enabled=yes state=started

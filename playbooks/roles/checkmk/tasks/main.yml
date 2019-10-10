@@ -1,0 +1,6 @@
+---
+# tasks file for checkmk
+
+- name: call OS specific installation
+  include: "install_{{ ansible_os_family | lower }}.yml"
+

@@ -1,0 +1,17 @@
+---
+# defaults file for elastic_apm_agent
+
+# java: 
+# https://search.maven.org/remotecontent?filepath=co/elastic/apm/elastic-apm-agent/1.10.0/elastic-apm-agent-1.10.0.jar
+
+# node.js
+# npm install elastic-apm-node --save
+
+# flask
+# pip install elastic-apm[flask]
+
+elastic_apm_java_url: https://search.maven.org/remotecontent?filepath=co/elastic/apm/elastic-apm-agent/1.10.0/elastic-apm-agent-1.10.0.jar
+elastic_apm_java_jar: elastic-apm-agent-1.10.0.jar
+elastic_apm_java_dir: /usr/share/apm-agent/java
+
+

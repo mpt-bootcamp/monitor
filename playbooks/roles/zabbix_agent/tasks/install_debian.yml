@@ -1,0 +1,25 @@
+# run Debian installation
+
+- name: enable zabbix repository.
+  apt:
+    deb: "{{ zabbix_repo_url }}"
+
+- name: install zabbix agent
+  apt:
+    update_cache: yes
+    install_recommends: yes
+    name:
+      - zabbix-agent
+      - zabbix-get
+    state: present
+
+- name: configure agent
+  template:
+    src: "{{ item }}.j2"
+    dest: /etc/zabbix/{{ item }}
+    owner: "root"
+    group: "root"
+    mode: '0644'
+    backup: yes
+  loop:
+    - zabbix_agentd.conf

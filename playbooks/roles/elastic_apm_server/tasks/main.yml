@@ -1,0 +1,38 @@
+---
+# tasks file for elastic_apm_server
+
+# https://www.elastic.co/guide/en/apm/server/current/configuration-process.html
+# java9 doesn't work
+# java8 ok
+# java11 not tested
+
+- name: add elasticsearch public signing key
+  apt_key:
+    url: "{{ elastic_key_url }}"
+    state: present
+
+- name: add elasticsearch repo definition
+  apt_repository:
+    repo: "{{ elastic_repo_url }}"
+    update_cache: yes
+    state: present
+
+- name: install elastic apm and required packages
+  apt:
+    name: "{{item.name}}={{item.version}}"
+    state: present
+  with_items:
+    - {name: 'apm-server', version: '{{elastic_apm_version}}' }
+   
+- name: use configuration template
+  template:
+    src: apm-server.yml.j2
+    dest: /etc/apm-server/apm-server.yml
+    owner: apm-server
+    group: apm-server
+    mode: 0600
+    backup: yes
+  notify: restart apm-server
+  
+- name: enable apm server to start on bootup
+  service: name=apm-server enabled=yes state=started

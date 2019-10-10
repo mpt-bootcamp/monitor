@@ -1,0 +1,7 @@
+---
+# installation tasks for Debian OS family
+
+# apache rewrite
+# grep -i LoadModule /etc/httpd/conf/httpd.conf | grep rewrite
+# LoadModule rewrite_module modules/mod_rewrite.so
+# grep -i AllowOverride /etc/httpd/conf/httpd.conf

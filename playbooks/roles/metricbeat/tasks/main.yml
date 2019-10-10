@@ -1,0 +1,30 @@
+---
+# tasks file for metricbeat
+
+- name: add elasticsearch public signing key
+  apt_key:
+    url: "{{ elastic_key_url }}"
+    state: present
+
+- name: add elasticsearch repo definition
+  apt_repository:
+    repo: "{{ elastic_repo_url }}"
+    update_cache: yes
+    state: present
+
+- name: install metricbeat and required packages
+  apt:
+    name: "{{item.name}}={{item.version}}"
+    state: present
+  with_items:
+    - {name: 'metricbeat', version: '{{metricbeat_version}}' }   
+
+- name: configure metricbeat
+  template:
+    src: metricbeat.yml.j2
+    dest: /etc/metricbeat/metricbeat.yml
+    backup: yes
+  notify: restart metricbeat
+
+- name: enable metricbeat to start on bootup
+  service: name=metricbeat enabled=yes state=started

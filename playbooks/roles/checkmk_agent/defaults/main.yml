@@ -1,0 +1,4 @@
+---
+# defaults file for checkmk_agent
+
+checkmk_only_from: "localhost"

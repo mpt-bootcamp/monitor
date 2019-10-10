@@ -1,0 +1,18 @@
+---
+# run Debian installation
+# https://www.shellhacks.com/checkmk-agent-centos-rhel-manual-install/
+
+- name: install checkmk agent
+  apt:
+    update_cache: no
+    name: "{{ item }}"
+    state: present
+  loop:
+      - check-mk-agent
+
+- name: configure checkmk only from hosts
+  template:
+    src: check_mk.j2
+    dest: /etc/xinetd.d/check_mk
+    backup: yes
+  notify: restart xinetd

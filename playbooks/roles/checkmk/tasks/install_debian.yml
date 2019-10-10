@@ -1,0 +1,46 @@
+--- 
+# install checkmk on ubuntu
+
+- name: install system packages
+  apt:
+    update_cache: yes
+    install_recommends: yes
+    name:
+      - xinetd 
+    state: present
+
+- name: install checkmk package.
+  apt:
+    deb: "{{ checkmk_pkg_url }}"
+    state: present
+  register: checkmk_pkg
+
+- debug:
+    var: checkmk_pkg
+
+- name: check if site exists
+  command: omd status {{ checkmk_site }}
+  register: omd_status
+  ignore_errors: yes
+
+- debug:
+    var: omd_status
+
+- name: create checkmk site
+  command: omd create --admin-password {{ checkmk_cmkadmin_password }} {{ checkmk_site }} 
+  register: omd_create
+  when:
+    - omd_status.rc == 1
+    - (omd_status.stdout_lines|length) == 0
+
+- debug:
+    var: omd_create
+
+- name: start the checkmk site
+  command: omd start {{ checkmk_site }}
+  register: omd_create
+  when:
+    - omd_status.stdout is search('stopped') or omd_status.stderr is search('not exist')
+  ignore_errors: yes
+   
+

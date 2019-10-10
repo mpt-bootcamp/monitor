@@ -1,0 +1,13 @@
+---
+# tasks file for openjdk
+
+#- name: include OS specific install
+#  include: "install_{{ ansible_os_family | lower }}.yml"
+
+- name: install openjdk from apt repo
+  apt:
+    name: "openjdk-{{ openjdk_version }}-jdk-headless"
+    update_cache: yes
+    state: present
+
+ 

@@ -1,0 +1,36 @@
+---
+# This a test playbook
+
+# Ansible requires Python. Some Linux does not include Python by default. This step is not
+# needed if the VM provisioned with Python installed. 
+- hosts: all
+  become: true
+  gather_facts: false
+
+  pre_tasks:
+  - name: install python (on Debian family) if not present
+    raw: test -e /usr/bin/python || (apt -y update && apt install -y python-minimal)
+    when: 1==2
+
+- hosts: all
+  become: yes
+  gather_facts: true
+
+  vars:
+    elasticsearch_url: "console1.lab.mpt.local:9200"
+    kibana_url: "console1.lab.mpt.local:5601"
+    checkmk_only_from: "localhost console1.lab.mpt.local"
+    zabbix_host: "console1.lab.mpt.local:10050"
+        
+  roles:
+    - { role: metricbeat } 
+    - { role: auditbeat }
+    - { role: filebeat }
+    - { role: heartbeat }
+    - { role: packetbeat }
+    - { role: elastic_apm_agent }
+    - { role: checkmk_agent }
+    - { role: zabbix_agent }
+
+
+  

@@ -1,0 +1,39 @@
+---
+# This playbook is to install the assets manager web application.
+
+# Ansible requires Python. Some Linux does not include Python by default. This step is not
+# needed if the VM provisioned with Python installed. 
+- hosts: all
+  become: true
+  gather_facts: false
+
+  pre_tasks:
+  - name: install python (on Debian family) if not present
+    raw: test -e /usr/bin/python || (apt -y update && apt install -y python-minimal)
+    when: 1==1
+
+# Application installation
+- hosts: all
+  become: yes
+  gather_facts: true
+  
+  vars:
+    app_owner: appsvc
+    app_group: appsvc
+    github_user: mpt-bootcamp
+        
+  pre_tasks:
+    - name: create the appliction group if not present
+      user:
+        name: "{{ app_group }}"
+        state: present
+
+    - name: create the applicatin user if not present
+      user:
+        name: "{{ app_owner }}"
+        group: "{{ app_group }}"
+        state: present
+
+  roles:
+    - { role: common }
+    - { role: assets_manager, app_version: 1.0.0 }    

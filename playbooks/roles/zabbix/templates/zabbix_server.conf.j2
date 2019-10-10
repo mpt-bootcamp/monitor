@@ -1,0 +1,24 @@
+# This is a configuration file for Zabbix server daemon
+# To get more information about Zabbix, visit http://www.zabbix.com
+
+LogFile=/var/log/zabbix/zabbix_server.log
+LogFileSize=0
+PidFile=/var/run/zabbix/zabbix_server.pid
+SocketDir=/var/run/zabbix
+
+DBHost=localhost
+DBName=zabbixdb
+DBUser=zabbix
+DBPassword=password
+DBPort=3306
+
+
+SNMPTrapperFile=/var/log/snmptrap/snmptrap.log
+
+# ListenIP=0.0.0.0
+Timeout=4
+
+ExternalScripts=/usr/lib/zabbix/externalscripts
+FpingLocation=/usr/bin/fping
+Fping6Location=/usr/bin/fping6
+LogSlowQueries=3000

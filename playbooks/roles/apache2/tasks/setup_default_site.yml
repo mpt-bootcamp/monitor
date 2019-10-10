@@ -1,0 +1,27 @@
+---
+# setup default website
+
+- name: create website directories 
+  file:
+    path: "{{ apache_home }}/images"
+    state: directory
+    owner: "{{ apache_owner }}"
+    group: "{{ apache_group }}"    
+    recurse: yes    
+
+- name: copy image files
+  copy:
+    src: images/missionpeak.jpg
+    dest: "{{ apache_home }}/images/missionpeak.jpg"
+    owner: "{{ apache_owner }}"
+    group: "{{ apache_group }}"
+    mode: '0644'
+    force: yes       
+
+- name: copy website pages
+  template:
+    src: "index.html.j2"
+    dest: "{{ apache_home }}/index.html"
+    owner: "{{ apache_owner }}"
+    group: "{{ apache_group }}"
+    force: yes 

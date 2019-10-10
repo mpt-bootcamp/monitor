@@ -1,0 +1,30 @@
+---
+# tasks file for heartbeat
+
+- name: add elasticsearch public signing key
+  apt_key:
+    url: "{{ elastic_key_url }}"
+    state: present
+
+- name: add elasticsearch repo definition
+  apt_repository:
+    repo: "{{ elastic_repo_url }}"
+    update_cache: yes
+    state: present
+
+- name: install heartbeat and required packages
+  apt:
+    name: "{{item.name}}={{item.version}}"
+    state: present
+  with_items:
+    - {name: 'heartbeat-elastic', version: '{{heartbeat_version}}' }
+   
+- name: configure heartbeat
+  template:
+    src: heartbeat.yml.j2
+    dest: /etc/heartbeat/heartbeat.yml
+    backup: yes
+  notify: restart heartbeat-elastic
+
+- name: enable heartbeat to start on bootup
+  service: name=heartbeat-elastic enabled=yes state=started

@@ -1,0 +1,15 @@
+---
+# defaults file for zabbix
+
+# Server
+# https://tecadmin.net/install-zabbix-on-ubuntu/
+# agent
+# https://docs.linuxconsulting.mn.it/notes/install-zabbix4-agent-on-ubuntu16-debian9
+# The step outlined works
+# Default login: Admin/zabbix
+
+# Agent:
+# https://computingforgeeks.com/how-to-install-and-configure-zabbix-agent-4-0-on-ubuntu-18-04-and-centos-7/
+
+zabbix_repo_url: https://repo.zabbix.com/zabbix/4.0/ubuntu/pool/main/z/zabbix-release/zabbix-release_4.0-3+xenial_all.deb
+

@@ -1,0 +1,15 @@
+[Unit]
+Description=Assets Manager Service
+
+[Service]
+User={{app_owner}}
+WorkingDirectory={{app_home}}
+ExecStart={{app_dest_dir}}/bin/startup.sh
+SuccessExitStatus=0
+TimeoutStopSec=10
+Restart=on-failure
+RestartSec=5
+KillSignal=2
+
+[Install]
+WantedBy=multi-user.target

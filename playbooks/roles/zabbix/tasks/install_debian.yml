@@ -1,0 +1,51 @@
+---
+# run os specific installation
+
+- name: enable zabbix repository.
+  apt:
+    deb: "{{ zabbix_repo_url }}"
+
+- name: install zabbix packages
+  apt:
+    update_cache: yes
+    install_recommends: yes
+    name:
+      - zabbix-server-mysql 
+      - zabbix-frontend-php 
+      - zabbix-agent
+      - zabbix-get
+    state: present
+
+- name: set configuration properties
+  template:
+    src: "{{ item }}.j2"
+    dest: /etc/zabbix/{{ item }}
+    owner: "root"
+    group: "root"
+    mode: '0644'
+    backup: yes
+  loop:
+    - zabbix_server.conf
+  
+- name: set web configuration properties
+  template:
+    src: "{{ item }}.j2"
+    dest: /etc/zabbix/web/{{ item }}
+    owner: "www-data"
+    group: "www-data"
+    backup: yes
+    mode: '0644'
+  loop:
+    - zabbix.conf.php
+  notify: 
+    - restart zabbix-server
+
+- name: enable zabbix-server to start on bootup
+  service: name=zabbix-server enabled=yes state=started
+  
+- name: enable zabbix-agent to start on bootup
+  service: name=zabbix-agent enabled=yes state=started
+ 
+
+
+

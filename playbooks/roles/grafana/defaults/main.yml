@@ -1,0 +1,12 @@
+---
+# defaults file for grafana
+
+# http://<hostname>:3000/
+# default login: admin/admin
+
+# grafana_version: 6.4.1 (see os specific vars file)
+grafana_daemon_name: grafana-server
+
+
+
+

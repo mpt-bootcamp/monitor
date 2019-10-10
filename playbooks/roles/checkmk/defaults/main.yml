@@ -1,0 +1,22 @@
+---
+# defaults file for checkmk
+
+# package:
+# https://checkmk.com/download.php
+# https://checkmk.com/support/1.6.0p2/check-mk-raw-1.6.0p2_0.xenial_amd64.deb
+#
+# site location:
+# /omd/<site>/etc
+# site access:
+# http://<hostname>/<site>
+# cmkadmin/cmkadmin
+
+# Agent
+# apt-get install xinetd
+
+checkmk_pkg_url: "https://checkmk.com/support/1.6.0p2/check-mk-raw-1.6.0p2_0.xenial_amd64.deb"
+
+checkmk_site: "test"
+checkmk_cmkadmin_password: "cmkadmin"
+
+

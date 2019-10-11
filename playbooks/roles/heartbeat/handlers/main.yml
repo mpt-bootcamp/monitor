@@ -1,5 +1,5 @@
 ---
 # handlers file for heartbeat
 
-- name: restart heartbeat
-  service: name=heartbeat state=restarted
+- name: restart heartbeat-elastic
+  service: name=heartbeat-elastic state=restarted

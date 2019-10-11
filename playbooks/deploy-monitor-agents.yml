@@ -20,7 +20,7 @@
     elasticsearch_url: "console1.lab.mpt.local:9200"
     kibana_url: "console1.lab.mpt.local:5601"
     checkmk_only_from: "localhost console1.lab.mpt.local"
-    zabbix_host: "console1.lab.mpt.local:10050"
+    zabbix_host: "console1.lab.mpt.local"
         
   roles:
     - { role: metricbeat } 

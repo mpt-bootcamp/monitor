@@ -1,12 +1,48 @@
 ---
 # tasks file for postfix
 
-# Configure Postfix as a sned only smtp server
-# https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-postfix-as-a-send-only-smtp-server-on-ubuntu-16-04
-# http://www.iasptk.com/configure-postfix-relayhost-smarthost-send-email-using-external-smptd/
-
-# Use this one
-# https://www.linuxbabe.com/mail-server/postfix-smtp-relay
-
-
 # https://docs.aws.amazon.com/ses/latest/DeveloperGuide/postfix.html
+
+#- name: enable product repository.
+#  apt:
+#    deb: "{{ product_repo_url }}"
+
+- name: install postfix and related packages
+  apt:
+    update_cache: yes
+    install_recommends: yes
+    name:
+      - postfix
+    state: present
+
+- name: configure agent
+  template:
+    src: "{{ item }}.j2"
+    dest: /etc/postfix/{{ item }}
+    owner: "root"
+    group: "root"
+    mode: '0644'
+    backup: yes
+  loop:
+    - main.cn
+    - sasl_passwd
+
+- name:  create a hashmap database file containing your smtp credentials
+  command: postmap hash:/etc/postfix/sasl_passwd
+  register: postmap
+  ignore_errors: yes
+
+- name: change credentials file ownership, group and permissions
+  file:
+    path: "{{ item }}"
+    owner: root
+    group: root
+    mode: '0600'
+  loop:
+    - /etc/postfix/sasl_passwd
+    - /etc/postfix/sasl_passwd.db
+  notify:
+    - restart postfix
+
+- name: enable postfix to start on bootup
+  service: name=postfix enabled=yes state=started    

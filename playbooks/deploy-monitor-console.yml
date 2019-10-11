@@ -24,7 +24,8 @@
     - { role: mysql } 
     - { role: apache2 }
 
-    - { role: zabbix }  
+    - { role: zabbix }
+    - { role: postfix }  
     - { role: checkmk }
     - { role: elasticsearch }
     - { role: kibana }

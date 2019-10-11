@@ -16,7 +16,7 @@
 
 checkmk_pkg_url: "https://checkmk.com/support/1.6.0p2/check-mk-raw-1.6.0p2_0.xenial_amd64.deb"
 
-checkmk_site: "test"
+checkmk_site: "lab"
 checkmk_cmkadmin_password: "cmkadmin"
 
 

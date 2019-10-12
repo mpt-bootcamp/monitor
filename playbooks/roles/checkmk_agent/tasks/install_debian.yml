@@ -8,11 +8,14 @@
     name: "{{ item }}"
     state: present
   loop:
-      - check-mk-agent
+    - xinetd
+    - check-mk-agent
 
-- name: configure checkmk only from hosts
-  template:
-    src: check_mk.j2
-    dest: /etc/xinetd.d/check_mk
-    backup: yes
-  notify: restart xinetd
+#- name: configure checkmk only from hosts
+#  template:
+#    src: check_mk.j2
+#    dest: /etc/xinetd.d/check_mk
+#    backup: yes
+#  notify: restart xinetd
+
+  

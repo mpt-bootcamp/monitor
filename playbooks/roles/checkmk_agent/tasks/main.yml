@@ -1,23 +1,12 @@
 ---
 # tasks file for checkmk_agent
 
-- name: install the required sytem packages
-  package:
-    name: "{{ item }}"
-    state: present
-  loop:
-      - xinetd
+#- name: install the required sytem packages
+#  package:
+#    name: "{{ item }}"
+#    state: present
+#  loop:
+#      - xinetd
 
 - name: run OS specific installation steps
   include: "install_{{ ansible_os_family | lower }}.yml"
-
-- name: test checkmk agent
-  command: check_mk_agent
-  register: checkmk_test
-  ignore_errors: yes
-
-# from host ==> nc <remote> 6556
-# from remote:
-- name: show checkmk test result
-  debug:
-    var: checkmk_test

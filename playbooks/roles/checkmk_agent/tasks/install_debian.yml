@@ -10,6 +10,7 @@
   loop:
     - xinetd
     - check-mk-agent
+    - stress
 
 #- name: configure checkmk only from hosts
 #  template:

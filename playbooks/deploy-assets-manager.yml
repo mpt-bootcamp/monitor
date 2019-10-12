@@ -21,6 +21,7 @@
     app_owner: appsvc
     app_group: appsvc
     github_user: mpt-bootcamp
+    amp_server_url: "console1.lab.mpt.local:9200"
         
   pre_tasks:
     - name: create the appliction group if not present

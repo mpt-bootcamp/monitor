@@ -1,2 +1,2 @@
-## LAB2 
+## LAB2 - Infrastructure monitoring
 ---

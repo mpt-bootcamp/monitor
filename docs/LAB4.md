@@ -1,2 +1,2 @@
-## LAB4
+## LAB4 - Log aggregation and SIEM
 ---

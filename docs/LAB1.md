@@ -99,38 +99,73 @@ From the personal laptop computer open and login to each of the following URLs w
 | Assets Manager | http://runner\<n\>.missionpeaktechnologies.com:9000 |   |
 
 
-### Exercise 5 - Creating a student user account in the monitor servers.
+### Exercise 5 - Creating user and group in the monitor servers.
 
 When creating the user account, make sure you enter a valid email address, so that you can setup and receive email alert notification.
 
-**Creating a Check_MK user account**
+#### Check_MK
 
-Login to Check_MK with the admin account, cmkadmin. Then select ***WATO->Users->New use*** to create a student user. Enter the following information (**Note** to replace \<n\> with your student number and provide your personal email address):
+Check_MK has the concept of Contacts, Contact Groups and Roles. 
+
+The 3 default roles are:
+
+* Admins - have complete administrative control
+* Users - have some control over the objects they are assigned
+* Guests - users are usually limited only viewing data
+
+Contacts in a group are usually people you want to notify (email, sms, etc) when something happens within your infrastructure.
+
+**Creating a user group**
+
+Login to Check_MK with the admin account, cmkadmin. Then select ***WATO->Contact Groups->New contact group***, then enter the following information:
+
+> Name: oncall
+> Alias: OnCall
+> Permitted HW/SW inventory paths: Allowed to see the whole tree
+
+Click "Save". You much also click the " 1 change" then "Activate Affected" button highlight in orange color to apply and activate the change.
+
+**Creating a user**
+
+Then select ***WATO->Users->New use*** to create a student user. Enter the following information (**Note** to replace \<n\> with your student number and provide your personal email address):
 
 > Username: student\<n\>
 > Full name: student\<n\>
 > Email address: \<Your valid Yahoo or Gmail address\>
 > password: student\<n\> 
-> [x] Everything
+> [x] Normal monitoring user
+> [x] OnCall
 
-Click the "Save" button when done. You much also click the " 1 change" then "Activate Affected" button highlight in orange color to activate the change. For every change you make to Check_MK, you need to activate change after you add or added any configurations.
+Click the "Save" button when done. 
 
-** Creating a Zabbix user account**
+####Zabbix
 
-First you need to create a user group first. We will create the "Everything" group just like Check_MK
+There are 3 default roles:
 
-Login to Zabbax as the Admin user. From the menu, select ***Admistration->User groups->Create user group***, then enter the following information:
+* User - The user has access to the Monitoring menu. The user has no access to any resources by default. Any permissions to host groups must be explicitly assigned.
+* Admin	- The user has access to the Monitoring and Configuration menus. The user has no access to any host groups by default. Any permissions to host groups must be explicitly given.
+* Super Admin -	The user has access to everything: Monitoring, Configuration and Administration menus. The user has a read-write access to all host groups. Permissions cannot be revoked by denying access to specific host groups.
 
-> Group name: Everything
+**Creating a Zabbix user group**
+
+1. Login to Zabbix and go to Administration → User groups
+2. Click on Create user group (or on the group name to edit an existing group)
+3. Edit group attributes in the form
+
+> Group name: OnCall
 > Frontend access: System default
 > [x] Enabled
 
-Then click the "Add" button to create the user group. Now let's create the student user and add it to the "Everything" user group. Select ***Admistration->Users->Create user***. Enter the following information.
+Then click the "Add" button to create the user group. 
+
+**Creating a Zabbix user account**
+
+Select ***Admistration->Users->Create user***. Enter the following information.
 
 User (tab)
 > Alias: student\<n\>
 > Name: student\<n\>
-> Groups: Everything
+> Groups: OnCall
 > Password: student\<n\>
 > Password (once again): student\<n\>
 > Language: English (en_US)
@@ -142,16 +177,72 @@ Media (tab). Click the "Add" link to open the dialog box. Then enter:
 
 Click the "Add" button to save.
 
+#### Grafana
+
+Grafana users have permissions that are determined by their:
+
+* Role - Admin, Editor, Viewer
+* Team/Group memberships where the Team has been assigned specific permissions.
+* Prmissions assigned directly to user
+
 **Creating a Grafana user account**
 
-Login to Grafana as the administrator (admin). On the left menu pane, select ***Configuration->Users***, then click the "Invite" button and enter:
+Login to Grafana as the administrator (admin). On the left menu pane, select *Configuration->Users*, then click the "Invite" button and enter:
 
 > Email or Username: \<Your valid Yahoo or Gmail address\>
 > Name: student\<n\>
 > Role: Editor
 > [x] Send Invite email
 
-When finish, click the "Invite" button
+When finish, click the "Invite" button. You should receive an email to activate the account.
+
+**Creating a Grafana team group**
+
+Select *Configuration->Teams->New team*. Enter the team name and leave the email blank.
+
+> Name: OnCall
+> Email: 
+
+**Adding member to the OnCall team**
+
+Select *Configuration->Teams" and click the "OnCall" team. Under the Members tab, click "Add member". then select the 'student\<n\>' email from the drowdown list. Click "Add to team"
+
+
+### Exercise 6 - Granting permission to a user and group
+
+After adding the user, you need to grant permission to the user or the group in order view devices and response to events associated with them. 
+
+#### Check_MK
+
+In Checkmk a user is one with access to the user interface. They have one or more Roles. Once a user is made responsible for specific hosts and services, they are identified as a Contact. A contact normally sees only their own hosts and services in the user interface, and receives notifications regarding possible problems.
+
+For Check_MK, permissions granted when you add a device and assign a contact group. We will see how it is done in **LAB2**
+
+
+#### Zabbix
+
+For Zabbix, permissions need to explicitly grant to a user group.
+
+* Go to *Administration->User groups*
+* Select the "OnCall" group, then click the "Permission" to tab to permisions.
+* Click the "Select" button and check the "Linux * servers". T
+* Click "Add" then select "Read" next to the the "Linux servers"
+* Click the "Update" button to save
+
+
+### Exercise 7 - Login to your student account
+
+With the student account added to each of the monitoring servers, you can now login to the servers with the student account and navigate around. The purpose of creating the user account is to setup email notification in the latest labs.
+
+Since we have yet add any devices yet, you should not see any devices listed when you login. 
+
+
+
+
+
+
+
+
 
 
 

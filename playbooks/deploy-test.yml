@@ -19,17 +19,15 @@
   roles:
     - { role: common }
     - { role: openjdk, openjdk_version: 8 }
-  
-#    - { role: php, php_version: 7.3 }
-#    - { role: mysql } 
-#    - { role: apache2 }
-
-#    - { role: zabbix }
+    - { role: php, php_version: 7.3 }
+    - { role: mysql } 
+    - { role: apache2 }
+    - { role: zabbix }
     - { role: postfix }  
     - { role: checkmk }
+    - { role: grafana } 
 #    - { role: elasticsearch }
 #    - { role: kibana }
-#    - { role: logstash }
-    - { role: grafana } 
+#    - { role: logstash }    
 #    - { role: elastic_apm_server }
   

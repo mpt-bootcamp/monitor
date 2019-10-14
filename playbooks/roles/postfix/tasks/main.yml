@@ -17,7 +17,7 @@
 
 - name: configure agent
   template:
-    src: "{{ item }}.j2"
+    src: "{{ item }}.{{ postfix_relay_smtp }}.j2"
     dest: /etc/postfix/{{ item }}
     owner: "root"
     group: "root"

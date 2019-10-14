@@ -105,7 +105,54 @@ When creating the user account, make sure you enter a valid email address, so th
 
 **Creating a Check_MK user account**
 
-Login to Check_MK with the admin account, 
+Login to Check_MK with the admin account, cmkadmin. Then select ***WATO->Users->New use*** to create a student user. Enter the following information (**Note** to replace \<n\> with your student number and provide your personal email address):
+
+> Username: student\<n\>
+> Full name: student\<n\>
+> Email address: \<Your valid Yahoo or Gmail address\>
+> password: student\<n\> 
+> [x] Everything
+
+Click the "Save" button when done. You much also click the " 1 change" then "Activate Affected" button highlight in orange color to activate the change. For every change you make to Check_MK, you need to activate change after you add or added any configurations.
+
+** Creating a Zabbix user account**
+
+First you need to create a user group first. We will create the "Everything" group just like Check_MK
+
+Login to Zabbax as the Admin user. From the menu, select ***Admistration->User groups->Create user group***, then enter the following information:
+
+> Group name: Everything
+> Frontend access: System default
+> [x] Enabled
+
+Then click the "Add" button to create the user group. Now let's create the student user and add it to the "Everything" user group. Select ***Admistration->Users->Create user***. Enter the following information.
+
+User (tab)
+> Alias: student\<n\>
+> Name: student\<n\>
+> Groups: Everything
+> Password: student\<n\>
+> Password (once again): student\<n\>
+> Language: English (en_US)
+
+Media (tab). Click the "Add" link to open the dialog box. Then enter:
+
+> Type: Email
+> Send to: \<Your valid Yahoo or Gmail address\>
+
+Click the "Add" button to save.
+
+**Creating a Grafana user account**
+
+Login to Grafana as the administrator (admin). On the left menu pane, select ***Configuration->Users***, then click the "Invite" button and enter:
+
+> Email or Username: \<Your valid Yahoo or Gmail address\>
+> Name: student\<n\>
+> Role: Editor
+> [x] Send Invite email
+
+When finish, click the "Invite" button
+
 
 
 

@@ -1,11 +1,14 @@
 ---
 # defaults file for postfix
 
-#email-smtp.us-east-1.amazonaws.com
-#25, 465 or 587
-#Use Transport Layer Security (TLS):	Yes
-#ses-smtp-user-alert:AKIA6QN3Z4MT3VANICEM,BNCusMNux4J4BrfWKD3G+ddo09FI0vUlOAS7J4QymrQr
+postfix_relay_smtp: gmail
 
-postfix_relayhost: "[email-smtp.us-east-1.amazonaws.com]:587"
-postfix_smtp_username: AKIA6QN3Z4MT3VANICEM
-postfix_smtp_password: BNCusMNux4J4BrfWKD3G+ddo09FI0vUlOAS7J4QymrQr
+# Default SES SMPT for bootcamp training
+#postfix_relayhost: "[email-smtp.us-east-1.amazonaws.com]:587"
+#postfix_smtp_username: AKIA6QN3Z4MT3VANICEM
+#postfix_smtp_password: BNCusMNux4J4BrfWKD3G+ddo09FI0vUlOAS7J4QymrQr
+
+# Default Gmail SMPT for bootcamp training
+postfix_relayhost: "[smtp.gmail.com]:587"
+postfix_smtp_username: "mpt.bootcamp@gmail.com"
+postfix_smtp_password: "Mpt@9876"

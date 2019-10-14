@@ -429,6 +429,17 @@
 # EHLO identity in SMTP dialog (defaults to instance_name)
 ;ehlo_identity = dashboard.example.com
 
+enabled = true
+host = smtp.gmail.com:587
+user = mpt.bootcamp@gmail.com
+# If the password contains # or ; you have to wrap it with trippel quotes. Ex """#password;"""
+password = """Mpt@9876"""
+;cert_file =
+;key_file =
+skip_verify = true
+from_address = mpt.bootcamp@gmail.com
+
+
 [emails]
 ;welcome_email_on_sign_up = false
 

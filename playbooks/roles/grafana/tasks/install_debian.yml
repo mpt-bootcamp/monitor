@@ -7,12 +7,12 @@
     state: present
   register: grafana_pkg
 
-#- name: use grafana configuration templates
-#  template:
-#    src: 
-#    dest: /etc/grafana/
-#    backup: yes
-#  notify: restart {{ grafana_daemon_name }} 
+- name: use grafana configuration templates
+  template:
+    src: grafana.ini.j2
+    dest: /etc/grafana/grafana.ini
+    backup: yes
+  notify: restart {{ grafana_daemon_name }} 
 
 - name: enable grafana to start on bootup
   service: name={{ grafana_daemon_name }} enabled=yes state=started 

@@ -1,2 +1,5 @@
 ---
 # handlers file for grafana
+
+- name: restart grafana-server
+  service: name=grafana-server state=restarted

@@ -10,7 +10,7 @@
   pre_tasks:
   - name: install python (on Debian family) if not present
     raw: test -e /usr/bin/python || (apt -y update && apt install -y python-minimal)
-    when: 1==2
+    when: 1==1
 
 - hosts: all
   become: yes

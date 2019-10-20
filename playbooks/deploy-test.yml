@@ -26,8 +26,8 @@
     - { role: postfix }  
     - { role: checkmk }
     - { role: grafana } 
-#    - { role: elasticsearch }
-#    - { role: kibana }
+    - { role: elasticsearch }
+    - { role: kibana }
 #    - { role: logstash }    
-#    - { role: elastic_apm_server }
+    - { role: elastic_apm_server }
   

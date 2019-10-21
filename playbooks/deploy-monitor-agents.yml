@@ -17,15 +17,15 @@
   gather_facts: true
 
   vars:
-    elasticsearch_url: "console1.lab.mpt.local:9200"
-    kibana_url: "console1.lab.mpt.local:5601"
-    checkmk_only_from: "localhost console1.lab.mpt.local"
-    zabbix_host: "console1.lab.mpt.local"
+#    elasticsearch_url: "console1.lab.mpt.local:9200"
+#    kibana_url: "console1.lab.mpt.local:5601"
+#    checkmk_only_from: "localhost console1.lab.mpt.local"
+#    zabbix_host: "console1.lab.mpt.local"
 
-#    elasticsearch_url: "ops01:9200"
-#    kibana_url: "ops01:5601"
-#    checkmk_only_from: "localhost ops01"
-#    zabbix_host: "ops01"    
+    elasticsearch_url: "ops01:9200"
+    kibana_url: "ops01:5601"
+    checkmk_only_from: "localhost ops01"
+    zabbix_host: "ops01"    
         
   roles:
     - { role: metricbeat } 

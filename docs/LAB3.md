@@ -146,7 +146,7 @@ JAR_PATH="$(find ${RUN_DIR} -name 'assets-manager-[0-9]*.[0-9]*.[0-9]*.jar')"
 $JAVA_HOME/bin/java $JAVA_OPTS -jar $JAR_PATH
 ```
 
-Now, replace the content of the startup.sh with
+Now, replace the content of the startup.sh with. **Note** to replace console\<n\> with your student number. For example console1 or console2, etc
 
 ```
 #!/bin/bash
@@ -180,7 +180,7 @@ JAVA_APM=""
 if [ -f "/usr/share/apm-agent/java/elastic-apm-agent-1.10.0.jar" ]; then
 JAVA_APM="-javaagent:/usr/share/apm-agent/java/elastic-apm-agent-1.10.0.jar \
  -Delastic.apm.service_name=asset-manager \
- -Delastic.apm.server_urls=http://ops01:8200 \
+ -Delastic.apm.server_urls=http://console<n>.lab.mpt.local:8200 \
  -Delastic.apm.application_packages=com.openecs.assets"
 fi
 
@@ -210,6 +210,47 @@ sudo systemctl start|stop|restart|status <service-name>
 ```
 
 ### Exercise 4 - Exploring the APM metrics
+
+Now open the APM dashboard again with this URL
+
+> http://console\<n\>.missionpeaktechnologies.com:5601/app/apm
+
+You should see now the Asset Manager application appears in the page. Click on it to open the dashboard page. Then select the Metrics tab
+
+![Kibana APM Server](images/kibana-apm-server-ex4a.png)
+![Kibana APM Server](images/kibana-apm-server-ex4a.png)
+
+Click on the Transactions tab, you should see empty transactions information
+
+![Kibana APM Server](images/kibana-apm-server-ex4c.png)
+
+To generate some transactions, open the following URL on the runner application server.
+
+> http://runner\<n\>.missionpeaktechnologies.com:9000
+
+Enter "mpt-public" for the bucket name . Then click on the links to browse through the assets.
+
+![Kibana APM Server](images/kibana-apm-server-ex4d.png)
+
+Next, open the following URLs
+
+> http://runner\<n\>.missionpeaktechnologies.com:9000/monitor
+> http://runner\<n\>.missionpeaktechnologies.com:9000/monitor/health
+> http://runner\<n\>.missionpeaktechnologies.com:9000/monitor/metrics
+> http://runner\<n\>.missionpeaktechnologies.com:9000/monitor/info
+> http://runner\<n\>.missionpeaktechnologies.com:9000/monitor/env
+
+Now you should see and see the transaction trace information when you open the APM server dashboard.
+
+> http://console\<n\>.missionpeaktechnologies.com:5601/app/apm#/services/asset-manager/transactions
+
+![Kibana APM Server](images/kibana-apm-server-ex4e.png)
+
+### Conclusion
+
+For commerical APM server and agent like New Relic, you can see more APM metrics to pinpoint and fix performance problems quickly. For example,
+
+![Kibana APM Server](images/kibana-apm-server-newrelic.png)
 
 
 

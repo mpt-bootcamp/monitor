@@ -1,13 +1,30 @@
 ## LAB2 - Infrastructure monitoring
 ---
 
-In this lab, we will learn how to setup infrastructure monitoring  using Zabbix and Check_MK.
+Infrastructure monitoring becomes more complex as IT infrastructures become both denser and dispersed. Full-stack infrastructure monitoring includes:
 
-### Exercise 1 - Adding a host in Zabbix to monitor
+* Hardware – Physical Health
+* Operating System and Platform – Utilization and load
+* Network – Bandwidth consumption and errors
+* Application – Performance and availability
 
-Login to Zabbix using the admin account. Then follow these steps:
+In this lab, we will learn how to setup hardware monitoring using Zabbix and Check_MK. 
 
-Select Configuration->Hosts->Create Host. Then fill in the following and then go to the Template tab.
+1. Adding and discovering devices to be monitored
+2. Configuring and tuning checks or templates
+3. Setting notification
+4. Acknowledging and handling alerts
+
+## Using Zabbix
+
+### Exercise 1 - Setting a Zabbix host for monitoring
+
+Login to Zabbix as the administrator.
+
+> http://console\<n\>.missionpeaktechnologies.com/zabbix
+
+
+**Select *Configuration->Hosts->Create Host. Then fill in the information below:**
 
 > Hostname: runner\<n\>.lab.mpt.local
 > Visual name: runner\<n\>
@@ -15,25 +32,33 @@ Select Configuration->Hosts->Create Host. Then fill in the following and then go
 > IP address: You can find out the IP address by pinging runner\<n\>.lab.mpt.local 
 > DNS name: runner\<n\>.lab.mpt.local
 
-Next click the "Template" tab and select
+![zabbix add host](images/zabbix-add-host-ex1a.png)
+
+**Next click the ***Template*** tab and select**
 
 > Link new template: Template OS Linux
 
 To do that, click the "Select" button to open the template. Check the desired template "Template OS Linux". When done click the "Add" link then the "Add" button to save.
 
-Select *Monitoring* from the top menu bar. The "Dashboar" page should show the newly addred host. You can click through the sub-menus - *Problems, Overview, Web, Latest data, Graphs, Screens, Maps Disovery Service* to checkout information and metrics collected. The *Overview* tab should display the metrics Zabbix collected from the host. The *Problems* tab show the problems Zabbix detects for one or more metrics associate with the hosts. 
+![zabbix add host](images/zabbix-add-host-ex1b.png)
 
-**Using Graphs**
+Once a host is added, Zabbix will run a host discovery in the background to identify the monitoring metrics based on the selected template, *Template OS Linux*. To view the discovered metrics,
 
-If you would like view a hosts metric in graph, 
 
-1. Click the *Hosts* tab under *Configuration*. 
-2. Select the group, host, and graph metric on the top right of the page.
-3. Choose the From and To window to display the graph over the time period.
+1.Select *Configuration->Hosts*. Then click on link for each column for the associated host to see the detail of the discovery.
 
-**Configuring a trigger**
+![zabbix add host](images/zabbix-add-host-ex1c.png)
 
-To configure a CPU overloaded trigger,
+**Enabling or disabling the default triggers**
+
+To configure the default monitoring triggers discovered, 
+
+1. Select *Configuration->Hosts*, then the *Triggers* to open the list of triggers
+2. Click "Enable" or "Disabled" to toggler
+
+![zabbix add host](images/zabbix-add-host-ex1d.png)
+
+**Creating a new monitoring trigger**
 
 1. Go to *Configuration->Hosts*
 2. Click on *Triggers* in the row of the host
@@ -53,9 +78,9 @@ Enter parameters in the ***Tigger*** tab.
 ![custom trigger](images/hosts-trigger-cpu-overloaded-example.png)
 
 
-**Configuring email notification**
+**Configuring and enabling email notification**
 
-Click on *Administration*, and then *Media types* in the top navigation bar. You will see the list of all media types. Click on *Email*.
+1. Click on *Administration*, and then *Media types* in the top navigation bar. You will see the list of all media types. Click on *Email*.
 
 Enter parameters in the ***Media type*** tab.
 
@@ -73,23 +98,24 @@ Enter parameters in the ***Media type*** tab.
 
 ![add gmail](images/administration-media-type-gmail.png)
 
-**Enabling notification action**
 
-Select menu *Configuration->Actions*. Then click "Report problem to Zabbix administrators" link.
-
-On the *Operations* tab, find *Operations* line and click the *edit* link to open the Operation detail. Then add the "OnCall" group to "Send to User groups"
+2. Next, select menu *Configuration->Actions*. Then click "Report problem to Zabbix administrators" link. 
+3. On the *Operations* tab, find *Operations* line and click the *edit* link to open the Operation detail. 
+4. Then add the "OnCall" group to "Send to User groups"
 
 ![add oncall](images/configuration_actions_user_group.png)
 
-**Triggering a problem notification**
+**Testing the email notification**
 
-A simple way to trigger a problem email notification is to shutdown the zabbix agent on a monitoring host. From the Jupyterhub control console, open the Terminal to SSH into the remote host.
+A simple way to trigger a problem and send an email notification is to shutdown the zabbix agent on a monitoring host. 
+
+1. From the Jupyterhub control console, open the Terminal to SSH into the monitoring host, runner\<n\>.
 
 ```console
 ssh -i ~/.ssh/id_rsa_ubuntu ubuntu@runner<n>.lab.mpt.local
 ```
 
-Once connected, then shutdown the Zabbix agent with this command
+2. Once connected, then shutdown the Zabbix agent with this command
 
 ```console
 sudo systemctl stop zabbix-agent
@@ -100,7 +126,7 @@ In about 5-10 minutes, you should receive an email notification.
 ![problem notification](images/problem-notification-email.png)
 
 
-**Acknowledging a problem alert**
+**Acknowledging an alert**
 
 To acknowledge a problem, go to *Monitoring->Problems*. The find the problem host. On the "Ack" column, click the "No" to open the form to put in the acknowlowedge information.
 
@@ -111,9 +137,11 @@ Enter the acknowledge message:
 ![problem host](images/problem-host-ack.png)
 
 
-**Resolving a problem to clear an alert**
+**Handling and resolving an alert**
 
-To fix and clear the unreachable alert we created by shutting the Zabbix agent, we just need to start the agent to fix the problem by executing this command at the runner host.
+To fix and clear an alert we just created by shutting the Zabbix agent, we just need to start the agent to fix the problem.
+
+From the runner\<n\> host, start the zabbix agent again
 
 ```console
 sudo systemtl start zabbix-agent
@@ -122,7 +150,12 @@ sudo systemtl start zabbix-agent
 You should receive an email notification the problem host is resolved.
 
 
-### Exercise 2 - Adding a host in Check_MK to monitor
+## Using Check_MK
+
+Next, let see how to monitoring a host using Check_MK.
+
+
+### Exercise 2 - Setting a Check_MK host for monitoring
 
 Login to Check_MK as the administrator. On the WATO view,
 

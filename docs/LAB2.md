@@ -1,7 +1,7 @@
 ## LAB2 - Infrastructure monitoring
 ---
 
-IT Infrastructure Monitoring Tools, like Zabbix and Check_MK, capture the availability of the IT infrastructure components in private and public clouds. These tools monitor and collate the availability and resource utilization metrics of servers, networks, database instances, hypervisors and storage.
+In this lab, we will learn how to setup infrastructure monitoring  using Zabbix and Check_MK.
 
 ### Exercise 1 - Adding a host in Zabbix to monitor
 

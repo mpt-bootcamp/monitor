@@ -1,9 +1,8 @@
-## LAB1 - Installing monitors and agents
+## LAB1 - Installing monitoring servers and agents
 ---
+There is many software from open source and commercial tools which help you to monitor your infrastructure, platform, application, meta and last-mile monitoring. In this lab, we will install the following open source monitoring tools:
 
-In this lab, we will install the following monitors and agents
-
-### Monitor Servers
+**Monitoring Servers***
 
 * Check_MK
 * Zabbix
@@ -11,27 +10,43 @@ In this lab, we will install the following monitors and agents
 * APM Server
 * Grafana
 
-### Monitor Agents
+**Monitoring Agents***
 
 * Check_MK Agent
 * Zabbix Agent
 * Elastsearch Beats
 * APM Agent
 
-We will also install a LAMP stack and Java web application to demonstrate the platform and application monitoring.
+We will also install a LAMP stack and a Java web application to demonstrate the platform and application monitoring.
 
 
-### Exercise 1 - Installing the monitor servers
+### Exercise 1 - Installing the monitoring servers
 
-At the **Jupyterhub** Terminal window, run the follow commands and Ansible playbook to install the monitor servers.
+First, Open the ***Jupyterhub*** web terminal console with this URL:
+
+> http://console\<n\>.missionpeaktechnologies.com:8000
+
+**Note** to replace \<n\> with your assigned student number. For example,
+
+> http://console2.missionpeaktechnologies.com:8000
+
+Enter student<n>/student<n> for the username and passowrd. For example, student2/student2
+
+Once login, open the Terminal window and run the following commands to download the ***monitor*** GitHub repo: 
+
 
 ```console
-mkdir -p ~/bootcamp
-cd ~/bootcamp
-git clone https://github.com/mpt-bootcamp/monitor.git
-cd monitor/playbooks
+$ mkdir -p ~/bootcamp
+$ cd ~/bootcamp
+$ git clone https://github.com/mpt-bootcamp/monitor.git
+$ cd monitor/playbooks
+```
 
-student1@console1:~/bootcamp/monitor/playbooks$ ansible-playbook -i localhost, -c local -kK
+Now you can use the Ansible playbooks provided to install the monitoring servers
+
+```console
+$ cd ~/bootcamp/monitor/playbooks
+$ ansible-playbook -i localhost, -c local -kK
 ```
 
 Enter the your student user passowrd when it prompts. For example,
@@ -43,9 +58,13 @@ BECOME password[defaults to SSH password]:
 
 ### Exercise 2 - Installing the monitor agents
 
-Once the monitor servers are installed on the console server, we can proceed to install the agents on the runner machine. Before you start running the installation steps, you need to update the Ansible playbook to tell the agents to the monitor servers to connect to and to report the monitoring metrics.
+In order for the monitoring servers to communicate and collect monitoring metrics from the hosts or devices, we also need to install the monitoring agents on those hosts.
 
-At the same **Jupyterhub** Terminal window, edit the paybook, *deploy-monitor-agents.yml*, and change the ***console1*** hostname name to match your assigned student console number. For example, ***console2***.
+From your **Jupyterhub** Terminal window, edit the playbook, *deploy-monitor-agents.yml*, and change the playbook variables to reflect your assigned hostname for the monitoring server. 
+
+**Replacing the *console1* hostname with your assigned hostname. For example, *console2*.
+
+Here is the original playbook variables:
 
 ```
   vars:
@@ -55,17 +74,22 @@ At the same **Jupyterhub** Terminal window, edit the paybook, *deploy-monitor-ag
     zabbix_host: "console1.lab.mpt.local"
 ```
 
-Once the playbook variables are updated, you can run the followng commands install the agents.
+Once the playbook variables are updated, you can run the followng commands install the agents on the remote host, runner\<n\>.lab.mpt.local. 
+
+**Note** to replace \<n\> with your assigned student number. For example, runner2.lab.mpt.local
+
 
 ```console
-cd ~/bootcamp/monitor/playbooks
+$ cd ~/bootcamp/monitor/playbooks
 
-ansible-playbook -i runner1.lab.mpt.local, -u ubuntu --private-key=~/.ssh/id_rsa_ubuntu deploy-monitor-agents.yml
+ansible-playbook -i runner<n>.lab.mpt.local, -u ubuntu --private-key=~/.ssh/id_rsa_ubuntu deploy-monitor-agents.yml
 ```
 
-### Exercise 3 - Installing the LAMP stack and Java web application
+Next, let's install the LAMP stack and a Java web application.
 
-At the same Jupyterhub Terminal window, edit the paybook, deploy-assets-manager.yml, and change the console1 hostname name to match your assigned student console number. For example, ***console2***.
+### Exercise 3 - Installing the LAMP stack and a Java web application
+
+At the Jupyterhub Terminal window, edit the paybook, deploy-assets-manager.yml, to change hostname to match your assigned student console number. For example, ***console2***. Here is the original playbook variables:
 
 ```
   vars:
@@ -75,19 +99,20 @@ At the same Jupyterhub Terminal window, edit the paybook, deploy-assets-manager.
     amp_server_url: "console1.lab.mpt.local:9200"
 ```
 
-Now run the playbooks.
+Now run the playbooks to deploy the agents and configure them to communicate and report monitoring metrics.
 
 ```console
-cd ~/bootcamp/monitor/playbooks
+$ cd ~/bootcamp/monitor/playbooks
+$ ansible-playbook -i runner<n>.lab.mpt.local, -u ubuntu --private-key=~/.ssh/id_rsa_ubuntu deploy-lamp.yml
 
-ansible-playbook -i runner1.lab.mpt.local, -u ubuntu --private-key=~/.ssh/id_rsa_ubuntu deploy-lamp.yml
-
-ansible-playbook -i runner1.lab.mpt.local, -u ubuntu --private-key=~/.ssh/id_rsa_ubuntu deploy-assets-manager.yml
+$ ansible-playbook -i runner<n>.lab.mpt.local, -u ubuntu --private-key=~/.ssh/id_rsa_ubuntu deploy-assets-manager.yml
 ```
 
-### Exercise 4 - Connecting to monitor servers and applications
+Before we starting setting up monitoring, let's login and navigate around each of these tools.
 
-From the personal laptop computer open and login to each of the following URLs with the default administrator username and password.
+### Exercise 4 - Connecting to monitoring servers and applications
+
+With a browser (Chrome), open the each of the following URLs and login with the default admin credential.
 
 | Monitor  |      URL      |  Username/Password |
 |----------|-------------|------|
@@ -98,36 +123,38 @@ From the personal laptop computer open and login to each of the following URLs w
 | LAMP | http://runner\<n\>.missionpeaktechnologies.com |   |
 | Assets Manager | http://runner\<n\>.missionpeaktechnologies.com:9000 |   |
 
+Next, let's create a user and a user group used for alert notification.
 
 ### Exercise 5 - Creating user and group in the monitor servers.
 
-When creating the user account, make sure you enter a valid email address, so that you can setup and receive email alert notification.
+**Note** when creating a user account, make sure you enter a valid email address, so that you can send email notification
+
 
 #### Check_MK
 
-Check_MK has the concept of Contacts, Contact Groups and Roles. 
+Check_MK has the concept of Contacts, Contact Groups and Roles. The default three roles are:
 
-The 3 default roles are:
+* **Admins** - have complete administrative control
+* **Users** - have some control over the objects they are assigned
+* **Guests** - users are usually limited only viewing data
 
-* Admins - have complete administrative control
-* Users - have some control over the objects they are assigned
-* Guests - users are usually limited only viewing data
-
-Contacts in a group are usually people you want to notify (email, sms, etc) when something happens within your infrastructure.
 
 **Creating a user group**
 
-Login to Check_MK with the admin account, cmkadmin. Then select ***WATO->Contact Groups->New contact group***, then enter the following information:
+1. Login to Check_MK with the admin account, cmkadmin.
+2. Select ***WATO->Contact Groups->New contact group***
+3. Then enter the following information:
 
 > Name: oncall
 > Alias: OnCall
 > Permitted HW/SW inventory paths: Allowed to see the whole tree
 
-Click "Save". You much also click the " 1 change" then "Activate Affected" button highlight in orange color to apply and activate the change.
+Click "Save". Then the "Change" and "Activate Affected" button to apply and activate the changes.
 
 **Creating a user**
 
-Then select ***WATO->Users->New use*** to create a student user. Enter the following information (**Note** to replace \<n\> with your student number and provide your personal email address):
+1. Select ***WATO->Users->New use*** to create a student user. 
+2. Enter the following information (**Note** to replace \<n\> with your student number and provide your personal email address):
 
 > Username: student\<n\>
 > Full name: student\<n\>
@@ -136,20 +163,21 @@ Then select ***WATO->Users->New use*** to create a student user. Enter the follo
 > [x] Normal monitoring user
 > [x] OnCall
 
-Click the "Save" button when done. 
+Click the "Save" button when "Change" and Activate Affected" activate the change. 
 
-####Zabbix
+#### Zabbix
 
-There are 3 default roles:
+For Zabbix, the default roles are:
 
-* User - The user has access to the Monitoring menu. The user has no access to any resources by default. Any permissions to host groups must be explicitly assigned.
-* Admin	- The user has access to the Monitoring and Configuration menus. The user has no access to any host groups by default. Any permissions to host groups must be explicitly given.
-* Super Admin -	The user has access to everything: Monitoring, Configuration and Administration menus. The user has a read-write access to all host groups. Permissions cannot be revoked by denying access to specific host groups.
+* **User** - The user has access to the Monitoring menu. The user has no access to any resources by default. Any permissions to host groups must be explicitly assigned.
+* **Admin**	- The user has access to the Monitoring and Configuration menus. The user has no access to any host groups by default. Any permissions to host groups must be explicitly given.
+* **Super Admin** -	The user has access to everything: Monitoring, Configuration and Administration menus. The user has a read-write access to all host groups. Permissions cannot be revoked by denying access to specific host groups.
 
-**Creating a Zabbix user group**
 
-1. Login to Zabbix and go to Administration → User groups
-2. Click on Create user group (or on the group name to edit an existing group)
+**Creating a user group**
+
+1. Login to Zabbix and go to Administration->User groups
+2. Click on *Create user group* (or on the group name to edit an existing group)
 3. Edit group attributes in the form
 
 > Group name: OnCall
@@ -160,9 +188,10 @@ Then click the "Add" button to create the user group.
 
 **Creating a Zabbix user account**
 
-Select ***Admistration->Users->Create user***. Enter the following information.
+1. Login to Zabbix and go to Administration->User
+2. Click *Create user**. Enter the following information.
 
-User (tab)
+**User (tab)**
 > Alias: student\<n\>
 > Name: student\<n\>
 > Groups: OnCall
@@ -170,74 +199,40 @@ User (tab)
 > Password (once again): student\<n\>
 > Language: English (en_US)
 
-Media (tab). Click the "Add" link to open the dialog box. Then enter:
+**Media (tab)** 
+
+1. Click the "Add" link to open the dialog box. 
+2. Enter:
 
 > Type: Email
 > Send to: \<Your valid Yahoo or Gmail address\>
 
 Click the "Add" button to save.
 
-#### Grafana
 
-Grafana users have permissions that are determined by their:
+**Granting user group permission**
 
-* Role - Admin, Editor, Viewer
-* Team/Group memberships where the Team has been assigned specific permissions.
-* Prmissions assigned directly to user
+1. Login to Zabbix and go to *Administration->User groups*
+2. Select the "OnCall" group, then click the "Permission" to tab to permisions.
+3. Click the "Select" button and check the "Linux * servers".
+4. Click "Add" then select "Read" next to the the "Linux servers" for the Permission
 
-**Creating a Grafana user account**
-
-Login to Grafana as the administrator (admin). On the left menu pane, select *Configuration->Users*, then click the "Invite" button and enter:
-
-> Email or Username: \<Your valid Yahoo or Gmail address\>
-> Name: student\<n\>
-> Role: Editor
-> [x] Send Invite email
-
-When finish, click the "Invite" button. You should receive an email to activate the account.
-
-**Creating a Grafana team group**
-
-Select *Configuration->Teams->New team*. Enter the team name and leave the email blank.
-
-> Name: OnCall
-> Email: 
-
-**Adding member to the OnCall team**
-
-Select *Configuration->Teams" and click the "OnCall" team. Under the Members tab, click "Add member". then select the 'student\<n\>' email from the drowdown list. Click "Add to team"
+Click the "Update" button to save
 
 
-### Exercise 6 - Granting permission to a user and group
+### Exercise 6 - Login to your student account
 
-After adding the user, you need to grant permission to the user or the group in order view devices and response to events associated with them. 
+To verify your student account created, login to Zabbix and Check_MK with your student account created.
 
-#### Check_MK
+| Monitor  |      URL      |  Username/Password |
+|----------|-------------|------|
+| Check_MK | http://console\<n\>.missionpeaktechnologies.com/lab | cmkadmin/cmkadmin |
+| Zabbix | http://console\<n\>.missionpeaktechnologies.com/zabbix   | Admin/zabbix |
 
-In Checkmk a user is one with access to the user interface. They have one or more Roles. Once a user is made responsible for specific hosts and services, they are identified as a Contact. A contact normally sees only their own hosts and services in the user interface, and receives notifications regarding possible problems.
+For the other monitoring servers, we will use the default administrator account for this bootcamp. 
 
-For Check_MK, permissions granted when you add a device and assign a contact group. We will see how it is done in **LAB2**
-
-
-#### Zabbix
-
-For Zabbix, permissions need to explicitly grant to a user group.
-
-* Go to *Administration->User groups*
-* Select the "OnCall" group, then click the "Permission" to tab to permisions.
-* Click the "Select" button and check the "Linux * servers". T
-* Click "Add" then select "Read" next to the the "Linux servers"
-* Click the "Update" button to save
-
-
-### Exercise 7 - Login to your student account
-
-With the student account added to each of the monitoring servers, you can now login to the servers with the student account and navigate around. The purpose of creating the user account is to setup email notification in the latest labs.
-
-Since we have yet add any devices yet, you should not see any devices listed when you login. 
-
-
-
+---
+## End
 
 
 

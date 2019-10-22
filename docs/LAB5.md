@@ -16,7 +16,7 @@ ssh -i ~/.ssh/id_rsa_ubuntu ubuntu@runner<n>.lab.mpt.local
 2. Verify Heartbeat is running
 
 ```console
-sudo systemctl status hearbeat-elastic
+sudo systemctl status heartbeat-elastic
 ```
 
 It should return **Active and running**
@@ -47,3 +47,33 @@ heartbeat-elastic.service - Ping remote services for availability and log result
   check.response.status: 200
 ```
 
+4. Using Elastic Uptime
+
+By using the new Elastic Uptime solution, they can detect when services are down or responding slowly. With alerting, they can get proactively notified even before those services are called by the application. 
+
+![Kibana Uptime](images/kibana-uptime-ex1a.png)
+
+
+Exercise 2 - Simulating downtime
+
+```console
+sudo su -l
+omd stop lab
+```
+
+Now check the Kibana Uptime dashboard. You should see the Check_MK server is down.
+
+![Kibana Uptime](images/kibana-uptime-ex2a.png)
+
+Now start Check_MK again
+
+```console
+sudo su -l
+omd start lab
+```
+
+Similarly, you can stop apache server to simulate Zabbix being down.
+
+```console
+sudo systemctl stop apache2
+``` 

@@ -1,28 +1,42 @@
 ## LAB6 - Implementing a last-mile monitoring
 ---
-Some of the well-known last-mile monitoring tools are 
 
-https://uptimerobot.com/
-https://newrelic.com/signup?trial=apm
-https://www.pagerduty.com
-https://uptime.com/pricing
-https://www.pingdom.com/sign-up/
-https://www.catchpoint.com/trial
-https://resources.apicasystems.com/trial
+Monitoring infrastructure, application metrics, etc. is very standard, but monitoring user experience is a relatively new type of monitoring. You can proactively simulate user behavior to validate availability, functionality, and performance for continuous, last-mile monitoring of your application. Some of the well-known last-mile monitoring tools are 
 
-
-Monitoring infrastructure, application metrics, etc. is very standard, but monitoring user experience is a relatively new type of monitoring that could be specific to SaaS. There is a considerable physical distance between where the application is running and the users are based at.
+* [UptimeRobot](https://uptimerobot.com/)
+* [New Relic](https://newrelic.com/signup?trial=apm)
+* [PagerDuty](https://www.pagerduty.com)
+* [Uptime](https://uptime.com)
+* [Pingdom](https://www.pingdom.com/sign-up/)
+* [CatchPoint](https://www.catchpoint.com)
+* [Apica](https://resources.apicasystems.com/trial)
 
 
-### Exercise 1- Using *UptimeRobot* for lst-mile monitoring
+
+### Exercise 1- Using *UptimeRobot* for last-mile monitoring
 
 A cloud-based monitoring service can be used to cover last-mile monitoring. If that service is available, it can be used to replace meta-monitoring, provided that meta-monitoring endpoints are accessible from the Internet as REST APIs or health-check URLs.
 
-1. Signing up
+1. Open the following URL to sign up
+https://uptimerobot.com/signUp
 
-> https://uptimerobot.com/signUp
+2. Enter the following information
 
+> First and Last Name
+> E-Mail
+> Password
 
+3. Open your email to activate the account.
+4. Then login to UptimeRobot to add a new monitor
+
+> Monitor Type: HTTP(s)
+> Friendly Name: Zabbix Last Mile
+> URL: http://runner\<n\>.missionpeaktechnologies.com/zabbix
+> [x] Alert Contact
+
+![UptimeRobot](images/uptimerobot-last-mile-1.png)
+![UptimeRobot](images/uptimerobot-last-mile-2.png)
+![UptimeRobot](images/uptimerobot-last-mile-3.png)
 
 ### Conclusion
 

@@ -1,4 +1,4 @@
-## LAB4 - Log aggregation and SIEM
+## LAB4 - Log aggregation and visualization
 ---
 
 Logs give you an idea of what is happening and what your system is doing. If you have a variety of hosts, then you might end up with different logs hosted on different locations. Log aggregation is a good way to bring together all these logs into one location to analyze, search, and report on the data.
@@ -50,7 +50,7 @@ Kibana provides a Logs app to explore and analyze the aggregated logs. To access
 
 ![Kibana Logs](images/kibana-logs-ex2a.png)
 
-**Using search**
+**Searching**
 
 Use the search bar to perform ad hoc searches for specific text. You can also create structured queries using Kibana Query Language. For example, enter host.hostname : "runner1" to see only the information for runner1.
 
@@ -83,7 +83,7 @@ To view all log files from a host, enter the hostname in the Search Bar
 
 > host.name: runner\<n\>.lab.mpt.local
 
-In additional to log aggregation analyze, you also use Kibana SIEM app to analyze host-related and network-related security events as part of proactive monitoring. In **Lab1** you already installed Auditbeat and Packetbeat agents, to provide additional events collection.
+In additional to log aggregation analyze, you also use Kibana SEIM app to analyze host-related and network-related security events as part of proactive monitoring. In **Lab1** you already installed Auditbeat and Packetbeat agents, to provide additional events collection.
 
 ![Kibana SEIM](images/kibana-seim-ex3a.png)
 
@@ -93,7 +93,7 @@ The SIEM app enables analysis of host-related and network-related security event
 * Network security event analysis
 * Timeline event viewer
 
-### Exercise 3 - Analyzing host security
+### Exercise 3 - Analyzing host security events
 
 1. Open the Kibana console and select the "SEIM" app. 
 2. Then click "View hosts" to open the dashboard to view key metrics regarding host-related security events, and a set of data tables
@@ -135,6 +135,9 @@ Kibana provides many pre-built dashboard that you can used to visualize events c
 4. Go back to the Dashboard page and search for all Auditbeat dashboard
 
 > Auditbeat
+
+5. Click through each Auditbeat dashboards to view the analytics.
+
 
 ### Conclusion
 

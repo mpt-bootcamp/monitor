@@ -12,11 +12,11 @@
     - check-mk-agent
     - stress
 
-#- name: configure checkmk only from hosts
-#  template:
-#    src: check_mk.j2
-#    dest: /etc/xinetd.d/check_mk
-#    backup: yes
-#  notify: restart xinetd
+- name: configure checkmk only from hosts
+  template:
+    src: check_mk.j2
+    dest: /etc/xinetd.d/check_mk
+    backup: yes
+  notify: restart xinetd
 
   

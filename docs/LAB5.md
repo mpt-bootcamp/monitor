@@ -1,22 +1,22 @@
-## LAB5 - Implementing meta monitoring
+## LAB5 - Monitoring the monitors
 ---
 
-Implementing a highly reliable method to check on the availability of monitoring systems is the key to the success of a meta-monitoring system. During the DC-only era, the options to implement reliable meta-monitoring were limited. But, with the availability of cloud-based infra and SAS monitoring applications that task has become much simpler as we would see in the subsequent sections.
+Implementing a highly reliable method to check on the availability of monitoring systems is the key to the success of a meta-monitoring system. During the data center era, the options to implement reliable meta-monitoring were limited. But, with the availability of cloud-based infrastructure monitoring applications that task and options have become much simpler.
 
 ### Exercise 1 - Implementing a meta-monitoring
 
-With one data center and no SaaS based monitoring service, the meta monigtoring optionsare limited. In this exercise, we will show you how to use Elastic Heatbeat agent to monitor both Check_MK and Zabbix.
+In this exercise, we will show you how to use Elastic **Heartbeat** agent to monitor both Check_MK and Zabbix.
 
-1. From the Jupyterhub Terminal window, login the the runner host where Heatbeat is installed.
+1. From the Jupyterhub Terminal window, login to your *runner* host to configure the Heartbeat monitoring.
 
 ```console
-ssh -i ~/.ssh/id_rsa_ubuntu ubuntu@runner<n>.lab.mpt.local
+$ssh -i ~/.ssh/id_rsa_ubuntu ubuntu@runner<n>.lab.mpt.local
 ```
 
-2. Verify Heartbeat is running
+2. Verifying Heartbeat is running
 
 ```console
-sudo systemctl status heartbeat-elastic
+$ sudo systemctl status heartbeat-elastic
 ```
 
 It should return **Active and running**
@@ -29,13 +29,22 @@ heartbeat-elastic.service - Ping remote services for availability and log result
 
 3. Configuring Heartbeat 
 
+Create the following heartbeat check file with the contents below. Make sure the replace console\<n\> with our console hostname. For example console2, console3, etc
+
+```console
+$ sudo vi /etc/heartbeat/monitors.d/check_mk.yml
+```
 ```
 # /etc/heartbeat/monitors.d/check_mk.yml
 - type: http
   name: check_mk
   schedule: '@every 5s'
-  urls: ["http://ops01/lab"]
+  urls: ["http://console<n>.missionpeaktechnologies.com/lab"]
   check.response.status: 200
+```
+
+```console
+$ sudo vi /etc/heartbeat/monitors.d/zabbix.yml
 ```
 
 ```
@@ -43,22 +52,31 @@ heartbeat-elastic.service - Ping remote services for availability and log result
 - type: http
   name: zabbix
   schedule: '@every 5s'
-  urls: ["http://ops01/zabbix"]
+  urls: ["http://console<n>.missionpeaktechnologies.com/zabbix"]
   check.response.status: 200
 ```
 
-4. Using Elastic Uptime
+4. Restarting **Heartbeat** agent
 
-By using the new Elastic Uptime solution, they can detect when services are down or responding slowly. With alerting, they can get proactively notified even before those services are called by the application. 
+```console
+$ sudo systemctl restart heartbeat-elastic
+$ sudo systemctl status heartbeat-elastic
+```
+
+5. Using Elastic Uptime
+
+By using the new Elastic Uptime solution, they can now detect if the monitor (Check_MK or Zabbix) is down. 
 
 ![Kibana Uptime](images/kibana-uptime-ex1a.png)
 
 
-Exercise 2 - Simulating downtime
+Exercise 2 - Simulating a monitor is down
+
+From the Jupyterhub Terminal console, stop the Check_MK server
 
 ```console
-sudo su -l
-omd stop lab
+$ sudo su -l
+$ omd stop lab
 ```
 
 Now check the Kibana Uptime dashboard. You should see the Check_MK server is down.
@@ -68,12 +86,15 @@ Now check the Kibana Uptime dashboard. You should see the Check_MK server is dow
 Now start Check_MK again
 
 ```console
-sudo su -l
-omd start lab
+$ sudo su -l
+$ omd start lab
 ```
 
-Similarly, you can stop apache server to simulate Zabbix being down.
+Similarly, you can stop and start apache server to simulate Zabbix being down.
 
 ```console
-sudo systemctl stop apache2
+$ sudo systemctl stop|start apache2
 ``` 
+
+---
+## End

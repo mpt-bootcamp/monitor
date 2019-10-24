@@ -22,8 +22,11 @@ Open the Elastic APM Server URL with the Chrome browser. Click the "Setup Instru
 
 To verify the APM server is running on the console machine, open the Terminal window from Jupyterhub and use the systemctl command to manage the APM server.
 
+> http://console\<n\>.missionpeaktechnologies.com:8000
+
+
 ```console
-sudo systemctl status apm-server
+$ sudo systemctl status apm-server
 ```
 
 You should see somethings like this
@@ -46,7 +49,7 @@ Warning: Journal has been rotated since unit was started. Log output is incomple
 To start, stop, or restart the APM server, you can use this command:
 
 ```console
-sudo systemctl start|stop|restart|status apm-server
+$ sudo systemctl start|stop|restart|status apm-server
 ```
 
 To manually configure the APM server, you can edit the configuration file, /etc/apm-server/apm-server.yml. Below are the key configuration attributes. It is setup to 
@@ -54,6 +57,12 @@ To manually configure the APM server, you can edit the configuration file, /etc/
 1. It collects APM metrics from the agent on port 8200
 2. Enables Kibana APM dashboard
 3. Store the APM metrics in Elasticsearch
+
+To view and search for the configuration parameters
+
+```console
+$ sudo cat /etc/apm-server/apm-server.yml | grep -C 10 "apm-server:" 
+```
 
 ```
 apm-server:
@@ -77,19 +86,19 @@ output.elasticsearch:
   hosts: ['localhost:9200']
 ```
 
-### Exercise 2 - Verify the APM agent
+### Exercise 2 - Verifying the APM agent
 
-From the Jupyterhub Terminal window, login to the application server:
+From the Jupyterhub Terminal window, login to your *runner* host:
 
 ```console
-ssh -i ~/.ssh/id_rsa_ubuntu ubuntu@runner<n>.lab.mpt.local
+$ ssh -i ~/.ssh/id_rsa_ubuntu ubuntu@runner<n>.lab.mpt.local
 ```
 
 To verify the APM Java agent was installed in **Lab1**
 
 ```console
-cd /usr/share/apm-agent/java
-ls -ltr
+$ cd /usr/share/apm-agent/java
+$ ls -ltr
 ```
 
 You should see Java agent jar file.
@@ -98,14 +107,14 @@ You should see Java agent jar file.
 -rw-r--r-- 1 root root 5059429 Oct 19 05:26 elastic-apm-agent-1.10.0.jar
 ```
 
-### Exercise 3 - Instrument the Java application to report performance metrics
+### Exercise 3 - Instrumenting the Java application for APM
 
-Login (SSH) to the application server, runner\<n\>.lab.mpt.local, if you are disconnected. Then edit the application startup.sh script to include the agent library.
+From your *runner* host, edit the application startup.sh script to include the agent library.
 
 ```console
-sudo su -l
-cd /apps/assets-manager/1.0.0/bin
-cat startup.sh
+$ sudo su -l
+$ cd /apps/assets-manager/1.0.0/bin
+$ cat startup.sh
 ```
 
 Without instrumenting, the startup.sh should looks like below.
@@ -198,15 +207,15 @@ $JAVA_HOME/bin/java $JAVA_OPTS $JAVA_APM -jar $JAR_PATH
 Now restart the assets manager to send APM metric to the APM server
 
 ```console
-sudo systemctl status assets-manager
-sudo systemctl restart assets-manager
-sudo systemctl status assets-manager
+$ sudo systemctl status assets-manager
+$ sudo systemctl restart assets-manager
+$ sudo systemctl status assets-manager
 ```
 
-Like any systemd service, you can use the following command to start, stop, restart or get status of a server.
+Like any systemd service, you can use the following command to start, stop, restart or get status of a server. Ensure this Java web application is started in order to report APM metrics to the monitoring server.
 
 ```
-sudo systemctl start|stop|restart|status <service-name>
+$ sudo systemctl start|stop|restart|status <service-name>
 ```
 
 ### Exercise 4 - Exploring the APM metrics
@@ -232,15 +241,16 @@ Enter "mpt-public" for the bucket name . Then click on the links to browse throu
 
 ![Kibana APM Server](images/kibana-apm-server-ex4d.png)
 
-Next, open the following URLs
+Next, open the following URLs to create some more web transactions to report to APM server.
 
 > http://runner\<n\>.missionpeaktechnologies.com:9000/monitor
 > http://runner\<n\>.missionpeaktechnologies.com:9000/monitor/health
 > http://runner\<n\>.missionpeaktechnologies.com:9000/monitor/metrics
+> http://runner\<n\>.missionpeaktechnologies.com:9000/monitor/prometheus
 > http://runner\<n\>.missionpeaktechnologies.com:9000/monitor/info
 > http://runner\<n\>.missionpeaktechnologies.com:9000/monitor/env
 
-Now you should see and see the transaction trace information when you open the APM server dashboard.
+Now you should be able to see the transaction trace information when you open the APM server dashboard.
 
 > http://console\<n\>.missionpeaktechnologies.com:5601/app/apm#/services/asset-manager/transactions
 

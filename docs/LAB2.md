@@ -238,7 +238,7 @@ In this step, we will change the threshold parameters of the "Number of Threads"
 > VALUE:     Warning at: 200
 > VALUE:     Critical at: 400
 
-5. Click Save, Change, then Activate affected apply the new rule
+5. Click Save, Change, then Activate affected button to add the new rule
 
 After a few minutes, the "Number of Threads" service should turn "Yellow" for the warning alert. You should also receive and email and Slack notification
 

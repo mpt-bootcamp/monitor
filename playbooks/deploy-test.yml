@@ -17,17 +17,18 @@
   gather_facts: true
 
   roles:
-    - { role: common }
-    - { role: openjdk, openjdk_version: 8 }
-    - { role: php, php_version: 7.3 }
-    - { role: mysql } 
-    - { role: apache2 }
-    - { role: zabbix }
-    - { role: postfix }  
-    - { role: checkmk }
-    - { role: grafana } 
-    - { role: elasticsearch }
-    - { role: kibana }
+#    - { role: common }
+#    - { role: openjdk, openjdk_version: 8 }
+#    - { role: php, php_version: 7.3 }
+#    - { role: mysql } 
+#    - { role: apache2 }
+#    - { role: zabbix }
+#    - { role: postfix }  
+#    - { role: checkmk }
+#    - { role: elasticsearch }
+#    - { role: kibana }
 #    - { role: logstash }    
-    - { role: elastic_apm_server }
+#    - { role: elastic_apm_server }
+    - { role: prometheus } 
+#    - { role: grafana } 
   

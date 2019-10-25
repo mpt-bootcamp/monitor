@@ -1,7 +1,7 @@
-  - job_name: "iotms-{{ target_host }}"
+  - job_name: "assets-manager-{{ target_host }}"
     scrape_interval: 5s
     scheme: http
-    metrics_path: "/actuator/prometheus"
+    metrics_path: "/monitor/prometheus"
 
     static_configs:
     - targets: "[{{ target_host }}:{{ target_port }}]"

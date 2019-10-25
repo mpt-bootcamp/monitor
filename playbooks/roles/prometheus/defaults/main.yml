@@ -10,8 +10,8 @@ app_env: local
 app_name: prometheus
 app_version: 2.9.1
 app_home: "/apps/{{app_name}}"
-app_owner: openecs
-app_group: openecs
+app_owner: appsvc
+app_group: appsvc
 
 app_pkg_name: "prometheus-{{app_version}}.linux-amd64.tar.gz"
 app_pkg_url: "https://github.com/prometheus/prometheus/releases/download/v{{app_version}}/{{app_pkg_name}}"

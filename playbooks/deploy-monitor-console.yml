@@ -30,6 +30,8 @@
     - { role: elasticsearch }
     - { role: kibana }
     - { role: logstash }
+    - { role: elastic_apm_server }    
+    - { role: prometheus }
     - { role: grafana } 
-    - { role: elastic_apm_server }
+
   

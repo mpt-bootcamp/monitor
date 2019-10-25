@@ -134,6 +134,7 @@ With a browser (Chrome), open the each of the following URLs and login with the 
 | Zabbix | http://console\<n\>.missionpeaktechnologies.com/zabbix   | Admin/zabbix |
 | Kibana | http://console\<n\>.missionpeaktechnologies.com:5601 |     |
 | Grafana | http://console\<n\>.missionpeaktechnologies.com:3000 | admin/admin  |
+| Prometheus | http://console\<n\>.missionpeaktechnologies.com:9090 |   |
 | LAMP | http://runner\<n\>.missionpeaktechnologies.com |   |
 | Assets Manager | http://runner\<n\>.missionpeaktechnologies.com:9000 |   |
 

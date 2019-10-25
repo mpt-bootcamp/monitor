@@ -210,7 +210,7 @@ In order to receive alert notification, we need to associate a contact group to 
 > Description: MPT Bootcamp Slack
 > Overriding by users: [x]
 > Notification Method: Slack or Mattermost
-> Webhook-URL: https://hooks.slack.com/services/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
+> Webhook-URL: https://hooks.slack.com/services/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
 
 Click the **Save** button to save.
 

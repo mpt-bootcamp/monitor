@@ -1,7 +1,7 @@
 ## LAB6 - Implementing a last-mile monitoring
 ---
 
-Monitoring infrastructure, application metrics, etc. is very standard, but monitoring user experience is a relatively new type of monitoring. You can proactively simulate user behavior to validate availability, functionality, and performance for continuous, last-mile monitoring of your application. Some of the well-known last-mile monitoring tools are 
+What if your monitoring systems fail? How do you even know when a monitoring system has failed? You need to monitor it, so how should you monitor the monitoring systems. An approach is to use last-mile monitoring tools like
 
 * [UptimeRobot](https://uptimerobot.com/)
 * [New Relic](https://newrelic.com/signup?trial=apm)
@@ -10,7 +10,6 @@ Monitoring infrastructure, application metrics, etc. is very standard, but monit
 * [Pingdom](https://www.pingdom.com/sign-up/)
 * [CatchPoint](https://www.catchpoint.com)
 * [Apica](https://resources.apicasystems.com/trial)
-
 
 
 ### Exercise 1- Using *UptimeRobot* for last-mile monitoring
@@ -38,6 +37,16 @@ https://uptimerobot.com/signUp
 ![UptimeRobot](images/uptimerobot-last-mile-2.png)
 ![UptimeRobot](images/uptimerobot-last-mile-3.png)
 
+Some commerical tools, like New Relic, provides additional features for last mile monitoring the extend visibility into frontend and usage metrics, and code-level visibility for web applications—including single-page apps—at every point in the delivery chain. It gives you visibility into the impact of frontend performance on the customer experience. 
+
+![New Relic](images/newrelic-last-mile-1.png)
+
 ### Conclusion
 
-A combination of access to public cloud-based infrastructure and SaaS based monitoring services eliminate the need to build meta-monitoring explicitly. However you still need to ensure that your monitoring is monitored. It is important that your monitoring infrastructure and processes cover all the requirements of meta-monitoring to make the overall monitoring system highly reliable.
+Whether you using open source or commericial last-mile monitoring tools, when you have a real-time view into what happens as customers use your software, everyone benefits:
+
+* Improve customer satisfaction and loyalty
+* Make better software decisions 
+* Foster collaboration across the organization
+* Drive positive business outcomes
+* Predict what’s next for your customer experience

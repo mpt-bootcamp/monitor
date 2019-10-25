@@ -1,33 +1,33 @@
 ## LAB7 (Optional) - Platform Monitoring
 ---
 
-Proactive monitoring should include platform serivces monitoring, like MySQL, Appache, MongoDB, HAProxy, etc. In this lab, you will learn how to monitor Apache webserver and MySQL using Check_MK plugins.
+With infrastructure monitoring, we mainly focus on monitoring physical and virtual device, servers, virtual machines, network switches, and routers. You can also use Zabbix and Check_MK to monitor platform services like Apache, MySQL, HAProxy, Kafka, MongoDB, etc.
 
 
-### Exercise 1 - Configuring Apache webserver using Check_MK
+### Exercise 1 - Monitoring Apache in Check_MK
 
-In this exercise, we will setup Apache monitoring using its server-status module. Login to Jupypter console with your student account
+Login to Jupypterhub Terminal *console* with your *student* account.
 
 > https://console\<n\>.missionpeaktechnologies.com:8000
 
-1. Open the Terminal windows to SSH into the remote host to enable apache status monitoring.
+1. First, you need to enable the Apache module to allow extended status for monitoring on the *runner* host where Apache is running.
 
 ```console
 $ ssh -i ~/.ssh/id_rsa_ubuntu ubuntu@runner\<n\>.lab.mpt.local
 $ sudo a2enmod status.load 
 ```
 
-2. Edit the apache status configuration file to allow Check_MK monitoring
+2. Next, edit the apache status configuration file to allow Check_MK to collect the Apache status metrics.
 
 ```console
 $ sudo vi /etc/apache2/mods-enabled/status.conf
 ```
 
-Find "#Require ip 192.0.2.0/24" add the line below it
+Find "#Require ip 192.0.2.0/24" and replace the line below and save the change.
 
 > Require ip 0.0.0.0
 
-Save the change. The new configuration file should looks like below:
+The new configuration file should looks like below:
 
 ```
 <IfModule mod_status.c>
@@ -59,43 +59,42 @@ Save the change. The new configuration file should looks like below:
 </IfModule>
 ```
 
-3. Now download the apache status check plugin to your runner host.
+3. Then download the apache status check plugin to the *runner* host.
 
 ```console
+$ sudo su -l
 $ cd /usr/lib/check_mk_agent/plugins
-$ sudo wget http://console<n>.lab.mpt.local/lab/check_mk/agents/plugins/apache_status
-$ sudo chmod 744 apache_status
+$ wget http://console<n>.lab.mpt.local/lab/check_mk/agents/plugins/apache_status
+$ chmod 744 apache_status
 
 # Run the command manually to verify it is working
-$ sudo /usr/lib/check_mk_agent/plugins/apache_status
+$ ./apache_status
 
 # Restart Apache
-$ sudo systemctl restart apache2
-$ sudo systemctl status apache2
+$ systemctl restart apache2
+$ systemctl status apache2
 ```
 
-4. Now login to the Check_MK console as the administrator to run a discover to the new apache check
+4. Last, login to the Check_MK console as the administrator to run a discover for the Apache check.
 
 > https://console\<n\>.missionpeaktechnologies.com/lab
 
-Go to WATO->Hosts to open the hosts list page. Then click the "Discovery" button
+Go to WATO->Hosts to open the hosts list page. Click the "Discovery" button, then "Change" and "Activate affected"
 
 ![Apache Check](images/apache-status-check-1.png)
 
-In a few minutes you should see the "Apache Status" be discovered. You can view it from VIEW->Hosts->All hosts, then select runner\<n\> and "Services".
+In a few minutes you should see the "Apache Status" service on VIEW->Hosts->All hosts when opening the runner\<n\> link.
 
 ![Apache Check](images/apache-status-check-2.png)
 
 
-### Exercise 2 - Monitoring MySQL server using Check_MK
+### Exercise 2 - Monitoring MySQL using Check_MK
 
-With similar steps, you can add MySQL monitoring to Check_MK.
-
-Login to Jupypter console with your student account
+Similary, we can add MySQL monitoring to Check_MK. Login to Jupypterhub console.
 
 > https://console\<n\>.missionpeaktechnologies.com:8000
 
-1. Open the Terminal windows to SSH into the remote host to create a MySQL monitoring user.
+1. Open the Terminal windows to SSH into the *runner* host to create a MySQL monitoring user.
 
 ```console
 $ ssh -i ~/.ssh/id_rsa_ubuntu ubuntu@runner\<n\>.lab.mpt.local
@@ -103,24 +102,23 @@ $ sudo su -l
 $ mysql -u root -p -A
 ```
 
-Run the followng MySQL command to create the monitoring user.
+Run the MySQL commands to create the monitoring user.
 
 ```console
 mysql> grant select, show databases on *.* to 'mptmonitor'@'%' identified by 'mptmonitor@9876';
 mysql> flush privileges;
 ```
 
-2. Next, download the MySQL check plugin on your *runner* host and run a local check.
+2. Next, download the MySQL plugin to your *runner* host.
 
 ```console
 $ sudo su -l
 $ cd /usr/lib/check_mk_agent/plugins
 $ wget http://console<n>.lab.mpt.local/lab/check_mk/agents/plugins/mk_mysql
 $ chmod 744 mk_mysql
-$ ./mk_mysql
 ```
 
-3. Create a MySQL check configuration file on your *runner* host.
+3. Create the MySQL check configuration file on your *runner* host.
 
 ```console
 $ sudo su -l
@@ -138,7 +136,7 @@ password=mptmonitor@9876
 4. Since configuration file contain password in plain text, we need to limit the access to the *root* user
 
 ```console
-$ sudo chmod 400 /etc/check_mk/mysql.cfg
+$ chmod 400 /etc/check_mk/mysql.cfg
 ```
 
 5. Restart the Check_MK agent, xinetd
@@ -147,16 +145,39 @@ $ sudo chmod 400 /etc/check_mk/mysql.cfg
 $ sudo systemctl restart xinetd
 ```
 
-6. Last, login to the Check_MK console as the administrator to run a discover to the new apache check
+6. Last, login to the Check_MK console as the administrator to run a discover for the MySQL check
 
 > https://console\<n\>.missionpeaktechnologies.com/lab
 
-Go to WATO->Hosts to open the hosts list page. Then click the "Discovery" button
+Go to WATO->Hosts to open the hosts list page. Click the "Discovery" button, then "Change" and "Activate affected"
 
-In a few minutes you should see the "MySQL" services being discovered. You can view it from VIEW->Hosts->All hosts, then select runner\<n\> and "Services".
-
+In a few minutes you should see the "MySQL" services being discovered when viewing the host services, VIEW->Hosts->All hosts, then select runner\<n\> and "Services".
 
 ![MySQL Check](images/check-mk-mysql-check-1.png)
+
+
+### Exercise 3 - Monitoring MySQL with Zabbix
+
+First we need to setup the mysql credential file for Zabbix on the MySQL server host, *runner*. From the Jupyterhub console,
+
+```console
+$ ssh -i ~/.ssh/id_rsa_ubuntu ubuntu@runner\<n\>.lab.mpt.local
+$ sudo su -l
+$ vi /var/lib/zabbix/.my.cnf
+```
+
+Paste the content below and save.
+
+```
+[client]
+user = mptmonitor
+password = mptmonitor@9876
+```
+
+Now go to your Zabbix Server web interface. Click on 'Configuration', 'Hosts' and select the *runner* host. Then select the "Template" tab  to add "Template DB MySQL" to the host.
+
+
+![MySQL Check](images/zabbix-mysql-monitor-1.png)
 
 ---
 ## END

@@ -17,8 +17,8 @@
   gather_facts: true
 
   vars:
-    elasticsearch_url: "deves01.ad.naehas.com:9200"
-    kibana_url: "deves01.ad.naehas.com:5601"
+    elasticsearch_url: "localhost:9200"
+    kibana_url: "localhost:5601"
         
   roles:
     - { role: metricbeat } 

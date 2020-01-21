@@ -23,13 +23,14 @@ heartbeat.config.monitors:
 # Configure monitors inline
 heartbeat.monitors:
 - type: http
+  name: elasticsearch
 
   # List or urls to query
   # urls: ["http://localhost:9200"]
   urls: ["http://{{ elasticsearch_url }}"]
 
   # Configure task schedule
-  schedule: '@every 10s'
+  schedule: '@every 5m'
 
   # Total test connection and data exchange timeout
   #timeout: 16s

@@ -16,6 +16,12 @@
   become: yes
   gather_facts: true
 
+  vars:
+    elasticsearch_url: "localhost:9200"
+    kibana_url: "localhost:5601"
+    elasticsearch_data_dir: "/data1/elasticsearch/data"
+    elasticsearch_log_dir: "/data1/elasticsearch/log"    
+
   roles:
     - { role: common }
     - { role: openjdk, openjdk_version: 8 }
@@ -25,6 +31,7 @@
     - { role: metricbeat }
     - { role: heartbeat }
     - { role: grafana }
+    - { role: nginx }
 
 
   

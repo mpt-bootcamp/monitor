@@ -1,5 +1,5 @@
 ---
-# The playbook to deploy Elastic metricbeat
+# The playbook to deploy Elastic auditbeat
 
 # Ansible requires Python. Some Linux does not include Python by default. This step is not
 # needed if the VM provisioned with Python installed. 
@@ -23,7 +23,7 @@
     kibana_url: "deves01.ad.naehas.com:5601"
         
   roles:
-    - { role: metricbeat } 
+    - { role: auditbeat } 
 
 
 

@@ -19,9 +19,20 @@
   with_items:
     - {name: 'elasticsearch', version: '{{elasticsearch_version}}' } 
 
+- name: create elasticsearch data and log directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0755'
+    owner: "{{ elasticsearch_user }}"
+    group: "{{ elasticsearch_user }}"    
+  loop:
+    - "{{ elasticsearch_data_dir }}"
+    - "{{ elasticsearch_log_dir }}"
+
 - name: use elasticsearch.yml configuration template
   template:
-    src: elasticsearch.yml.{{ elasticsearch_version }}.j2
+    src: elasticsearch.yml.j2
     dest: /etc/elasticsearch/elasticsearch.yml
     backup: yes
   notify: restart elasticsearch

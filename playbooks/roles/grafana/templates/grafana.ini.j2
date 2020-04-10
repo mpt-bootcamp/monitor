@@ -404,17 +404,20 @@
 ;enabled = true
 
 #################################### Auth LDAP ##########################
+{% if grafana_ldap_enabled == true %}
 [auth.ldap]
-;enabled = false
-;config_file = /etc/grafana/ldap.toml
-;allow_sign_up = true
+enabled = true
+config_file = /etc/grafana/ldap.toml
+allow_sign_up = true
 
 # LDAP backround sync (Enterprise only)
 # At 1 am every day
 ;sync_cron = "0 0 1 * * *"
 ;active_sync_enabled = true
+{% endif %}
 
 #################################### SMTP / Emailing ##########################
+{% if grafana_smtp_enabled == true %}
 [smtp]
 ;enabled = false
 ;host = localhost:25
@@ -430,15 +433,15 @@
 ;ehlo_identity = dashboard.example.com
 
 enabled = true
-host = smtp.gmail.com:587
-user = mpt.bootcamp@gmail.com
+host = {{ grafana_smtp_host }}:25
+user = {{ grafana_smtp_user }}
 # If the password contains # or ; you have to wrap it with trippel quotes. Ex """#password;"""
-password = """Mpt@9876"""
+password = """{{ grafana_smtp_password }}"""
 ;cert_file =
 ;key_file =
 skip_verify = true
-from_address = mpt.bootcamp@gmail.com
-
+from_address = {{ grafana_smtp_user }}
+{% endif %}
 
 [emails]
 ;welcome_email_on_sign_up = false

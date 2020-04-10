@@ -1,0 +1,71 @@
+# https://github.com/prometheus/pushgateway
+
+- name: check if the prometheus gateway version is already installed
+  stat:
+    path: "{{prometheus_gateway_dest_dir}}/{{prometheus_gateway_version}}"
+  register: prometheus_gateway_facts
+
+- name: create the prometheus gatewaydistribution directory if not exist 
+  file:
+    path: "{{prometheus_gateway_src_dir}}"
+    state: directory
+    recurse: yes
+  when: prometheus_gateway_facts.stat.exists == false             
+
+- name: create the prometheus gateway version directory if not exist 
+  file:
+    path: "{{prometheus_gateway_dest_dir}}"
+    state: directory
+    recurse: yes  
+  when: prometheus_gateway_facts.stat.exists == false  
+
+- name: download the prometheus gateway package to the distribution directory
+  get_url:
+    url: "{{prometheus_gateway_pkg_url}}"
+    dest: "{{prometheus_gateway_src_dir}}/{{prometheus_gateway_pkg_name}}"
+  when: prometheus_gateway_facts.stat.exists == false  
+
+- name: unpackage prometheus gateway
+  unarchive:
+    src: "{{prometheus_gateway_src_dir}}/{{prometheus_gateway_pkg_name}}"
+    dest: "{{prometheus_gateway_dest_dir}}"
+    remote_src: yes
+  when: prometheus_gateway_facts.stat.exists == false  
+
+- name: rename the prometheus gateway directory to the version
+  command: mv {{prometheus_gateway_dir_name}} {{prometheus_gateway_version}}
+  args:
+    chdir: "{{prometheus_gateway_dest_dir}}"
+  when: prometheus_gateway_facts.stat.exists == false  
+
+- name: create the prometheus gateway data directory
+  file:
+    path: "{{prometheus_gateway_home}}/{{prometheus_gateway_version}}/data"
+    state: directory
+    recurse: yes  
+  when: prometheus_gateway_facts.stat.exists == false  
+
+- name: change prometheus gateway owner 
+  file:
+    path: "{{prometheus_gateway_dest_dir}}"
+    owner: "{{ app_owner | default('root')}}"
+    group: "{{ app_group | default('root')}}"
+    recurse: yes
+  when: prometheus_gateway_facts.stat.exists == false  
+    
+- name: run the prometheus gateway as service
+  template:
+    src: "{{prometheus_gateway_name}}.service.j2"
+    dest: /etc/systemd/system/{{prometheus_gateway_name}}.service
+
+- name: restart the prometheus gateway service 
+  systemd:
+    daemon_reload: yes
+    state: restarted
+    name: "{{ prometheus_gateway_name }}"    
+
+- name: make sure the prometheus gateway service is running
+  systemd:
+    state: started
+    enabled: yes
+    name: "{{ prometheus_gateway_name }}"

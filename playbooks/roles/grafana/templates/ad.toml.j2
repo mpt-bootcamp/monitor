@@ -1,0 +1,30 @@
+[[servers]]
+host = "{{ grafana_ldap_host }}"
+port = 389
+use_ssl = false
+start_tls = false
+ssl_skip_verify = true
+bind_dn = "{{ grafana_ldap_bind_user }}"
+bind_password = '{{ grafana_ldap_bind_password }}'
+search_filter = "(sAMAccountName=%s)"
+search_base_dns = ["{{ grafana_ldap_base_dn }}"]
+
+[servers.attributes]
+name = "givenName"
+surname = "sn"
+username = "sAMAccountName"
+member_of = "memberOf"
+email =  "mail"
+
+[[servers.group_mappings]]
+group_dn = "cn=netadmins,{{ grafana_ldap_base_dn }}"
+org_role = "Admin"
+grafana_admin = true
+
+#[[servers.group_mappings]]
+#group_dn = "cn=dev-lvl1,{{ grafana_ldap_base_dn }}"
+#org_role = "Editor"
+
+[[servers.group_mappings]]
+group_dn = "*"
+org_role = "Viewer"

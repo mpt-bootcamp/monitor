@@ -9,6 +9,14 @@
 
 - name: use grafana configuration templates
   template:
+    src: ad.toml.j2
+    dest: /etc/grafana/ldap.toml
+    backup: no
+  notify: restart {{ grafana_daemon_name }}  
+  when: grafana_ldap_enabled
+
+- name: use grafana configuration templates
+  template:
     src: grafana.ini.j2
     dest: /etc/grafana/grafana.ini
     backup: yes

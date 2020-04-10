@@ -7,6 +7,20 @@
 # grafana_version: 6.4.1 (see os specific vars file)
 grafana_daemon_name: grafana-server
 
+grafana_ldap_enabled: true
+grafana_ldap_host: "prodadq1.naehas.com"
+grafana_ldap_base_dn: "cn=users,dc=ad,dc=naehas,dc=com"
+grafana_ldap_bind_user: jenkinsad@ad.naehas.com
+grafana_ldap_bind_password: "n43h4s!!!"
+
+grafana_smtp_enabled: true
+grafana_smtp_host: exim01.naehas.com
+grafana_smtp_user: notification@naehas.com
+grafana_smtp_password: "v2pMAMh" 
+grafana_smtp_port: 25
+
+
+
 
 
 

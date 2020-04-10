@@ -1,0 +1,24 @@
+[Unit]
+Description=Prometheus Push Gateway
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+User={{app_owner}}
+Type=simple
+ExecStart={{prometheus_gateway_home}}/{{prometheus_gateway_version}}/pushgateway \
+    --web.listen-address=":9091" \
+    --web.telemetry-path="/metrics" \
+    --persistence.file="{{prometheus_gateway_home}}/{{prometheus_gateway_version}}/data/metric.store" \
+    --persistence.interval=5m \
+    --log.level="info" 
+
+SuccessExitStatus=0
+TimeoutStopSec=10
+Restart=on-failure
+RestartSec=5
+KillSignal=2
+
+[Install]
+WantedBy=multi-user.target
+

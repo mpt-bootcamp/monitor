@@ -1,0 +1,32 @@
+---
+# The playbook to deploy Elastic packetbeat
+
+# Ansible requires Python. Some Linux does not include Python by default. This step is not
+# needed if the VM provisioned with Python installed. 
+- hosts: all
+  become: true
+  gather_facts: false
+
+  pre_tasks:
+  - name: install python (on Debian family) if not present
+    raw: test -e /usr/bin/python || (apt -y update && apt install -y python-minimal)
+    when: 1==1
+
+- hosts: all
+  become: yes
+  gather_facts: true
+
+  vars:
+#    elasticsearch_url: "localhost:9200"
+#    kibana_url: "localhost:5601"
+    elasticsearch_url: "deves01.ad.naehas.com:9200"
+    kibana_url: "deves01.ad.naehas.com:5601"
+        
+  tasks:
+    - name: stop and disable packetbeat
+      service: name=packetbeat enabled=no state=stopped  
+
+
+
+
+  

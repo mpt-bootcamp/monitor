@@ -1,6 +1,9 @@
 - name: insert/update configuration using a local file and validate it
   blockinfile:
-    block: "{{ lookup('file', './local/ssh_config') }}"
-    dest: "/etc/ssh/ssh_config"
+    block: "{{ lookup('file', 'templates/scrape_configs/scrape-gateway.j2') }}"
+    dest: "{{app_dest_dir}}/{{app_version}}/prometheus.yml"
+    insertafter: "^scrape_configs:[ ]*$"
+    state: present
+    marker_begin: "BEGIN gateway"
+    marker_end: "END gateway"
     backup: yes
-    validate: "/usr/sbin/sshd -T -f %s"

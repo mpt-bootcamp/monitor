@@ -23,15 +23,15 @@
     elasticsearch_log_dir: "/data1/elasticsearch/log"    
 
   roles:
-    - { role: common }
-    - { role: openjdk, openjdk_version: 8 }
-    - { role: elasticsearch }
-    - { role: kibana }
-    - { role: elastic_apm_server }
-    - { role: metricbeat }
-    - { role: heartbeat }
+#    - { role: common }
+#    - { role: openjdk, openjdk_version: 8 }
+#    - { role: elasticsearch }
+#    - { role: kibana }
+#    - { role: elastic_apm_server }
+#    - { role: metricbeat }
+#    - { role: heartbeat }
     - { role: grafana }
-    - { role: nginx }
+#    - { role: nginx }
 
 
   

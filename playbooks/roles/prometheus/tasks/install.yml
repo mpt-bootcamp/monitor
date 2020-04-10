@@ -1,21 +1,21 @@
 - name: check if the application version is already installed
   stat:
-    path: "{{app_dest_dir}}"
+    path: "{{app_dest_dir}}/{{app_version}}"
   register: app_facts
 
 - name: create the distribution directory if not exist 
   file:
     path: "{{app_src_dir}}"
     state: directory
-    recurse: yes    
-  when: app_facts.stat.exists == false
+    recurse: yes
+  when: app_facts.stat.exists == false        
 
 - name: create the application version directory if not exist 
   file:
     path: "{{app_dest_dir}}"
     state: directory
     recurse: yes  
-  when: app_facts.stat.exists == false
+  when: app_facts.stat.exists == false     
 
 - name: download the package to the distribution directory
   get_url:
@@ -28,13 +28,13 @@
     src: "{{app_src_dir}}/{{app_pkg_name}}"
     dest: "{{app_dest_dir}}"
     remote_src: yes
-  when: app_facts.stat.exists == false
+  when: app_facts.stat.exists == false     
 
 - name: rename the application directory to the version
   command: mv {{app_dir_name}} {{app_version}}
   args:
     chdir: "{{app_dest_dir}}"
-  when: app_facts.stat.exists == false
+  when: app_facts.stat.exists == false     
 
 - name: change application owner 
   file:
@@ -43,11 +43,14 @@
     group: "{{ app_group | default('root')}}"
     recurse: yes
   when: app_facts.stat.exists == false
-  
+
 - name: run the application as service
   template:
     src: "{{app_name}}.service.j2"
     dest: /etc/systemd/system/{{app_name}}.service
+
+- name: add scrape configurations
+  include: "add_scrape_configs.yml"
 
 - name: restart the service
   systemd:
